@@ -1,0 +1,113 @@
+#!/bin/bash
+## Set your defaults ##################
+
+USERNAME="miningisfun"
+WORKERNAME="86753099"
+MINER_ADDRESS="$USERNAME"."$WORKERNAME"
+MINER_ALGO="$ALGO"
+PASSWORD="password"
+
+## checking for a password override from 1active ########
+if [ -z $PASSWORD_OVERRIDE ]
+then
+ PASSWORD=$PASSWORD_OVERRIDE
+fi
+
+#######################################
+
+MINER_PWD="$PASSWORD"
+
+## Pool ports #########################
+
+case $COIN in
+ "BSD") 
+     MINER_POOL="stratum+tcp://bsd.suprnova.cc"
+     MINER_PORT="8686";;
+ "BTCZ") 
+     MINER_POOL="stratum+tcp://btcz.suprnova.cc"
+     MINER_PORT="5586";;
+ "BTG") 
+     MINER_POOL="stratum+tcp://btg.suprnova.cc"
+     MINER_PORT="8816";;
+ "DASH") 
+     MINER_POOL="stratum+tcp://dash.suprnova.cc"
+     MINER_PORT="9991";;
+ "DGB")
+     if [ "$ALGO" == "myr-groestl" -o "$ALGO" == "myr-gr" ]
+     then
+      MINER_POOL="stratum+tcp://dgbg.suprnova.cc"
+      MINER_PORT="7978"
+     elif [ "$ALGO" == "skein" ]
+     then
+      MINER_POOL="stratum+tcp://dgbs.suprnova.cc"
+      MINER_PORT="5226"
+     fi
+     ;;
+ "ETH") 
+     MINER_POOL="stratum+tcp://eth.suprnova.cc"
+     if [ "$MINER" = "claymore" ]
+     then
+      MINER_PORT="5005"
+     else
+      MINER_PORT="5000"
+     fi
+     ;;
+ "ETN")
+     MINER_POOL="stratum+tcp://etn-stratum.suprnova.cc"
+     MINER_PORT="8875";;
+ "GRS")
+     MINER_POOL="stratum+tcp://grs.suprnova.cc"
+     MINER_PORT="5544";;
+ "HUSH")
+     MINER_POOL="stratum+tcp://hush.suprnova.cc"
+     MINER_PORT="4048";;
+ "KMD")
+     MINER_POOL="stratum+tcp://kmd.suprnova.cc"
+     MINER_PORT="6250";;
+ "LBC")
+     MINER_POOL="stratum+tcp://lbry.suprnova.cc"
+     MINER_PORT="6256";;
+ "MONA")
+     MINER_POOL="stratum+tcp://mona.suprnova.cc"
+     MINER_PORT="2995";;
+ "MUN")
+     MINER_POOL="stratum+tcp://mun.suprnova.cc"
+     MINER_PORT="8963";;
+ "STAK")
+     MINER_POOL="stratum+tcp://stak.suprnova.cc"
+     MINER_PORT="7706";;
+ "START")
+     MINER_POOL="stratum+tcp://start.suprnova.cc"
+     MINER_PORT="2207";;
+ "VTC")
+     MINER_POOL="stratum+tcp://vtc.suprnova.cc"
+     MINER_PORT="5678";;
+ "XVG")
+     if [ "$ALGO" == "X17" ]
+     then
+      MINER_POOL="stratum+tcp://xvg-x17.suprnova.cc"
+      MINER_PORT="7477"
+     elif [ "$ALGO" == "myr-groestl" -o "$ALGO" == "myr-gr" ]
+     then
+      MINER_POOL="stratum+tcp://xvg-mg.suprnova.cc"
+      MINER_PORT="7722"
+     elif [ "$ALGO" == "lyra2rev2" ]
+     then
+      MINER_POOL="stratum+tcp://xvg-lyra.suprnova.cc"
+      MINER_PORT="2595"
+     fi
+     ;;
+ "XZC")
+     MINER_POOL="stratum+tcp://xzc.suprnova.cc"
+     MINER_PORT="4042";;
+ "ZEC")
+     MINER_POOL="stratum+tcp://zec-us.suprnova.cc"
+     MINER_PORT="2142";;
+ "ZCL")
+     MINER_POOL="stratum+tcp://zcl.suprnova.cc"
+     MINER_PORT="1569";;
+ "ZEN")
+     MINER_POOL="stratum+tcp://zen.suprnova.cc"
+     MINER_PORT="3618";;
+esac
+
