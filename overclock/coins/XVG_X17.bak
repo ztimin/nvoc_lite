@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "using XVG_X17 oc"
 
 ################################################
 ## Set (or don't) your custom card overclocks ##

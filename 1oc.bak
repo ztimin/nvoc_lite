@@ -24,11 +24,11 @@ elif [ -f ~/overclock/coins/"$COIN" ]
 then
  echo "using ""$COIN"
  source ~/overclock/coins/$COIN
-elif [ -f ~/overclock/"$ALGO".oc ]
+elif [ -f ~/overclock/algos/"$ALGO".oc ]
 then
  echo "using ""$ALGO".oc
- source ~/overclock/"$ALGO".oc
+ source ~/overclock/algos/"$ALGO".oc
 else
  echo "using default.oc"
- source ~/overclock/default.oc
+ source ~/overclock/algos/default.oc
 fi
