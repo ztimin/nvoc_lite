@@ -1,0 +1,34 @@
+#!/bin/bash
+#### REMOTE 1OC SECTION ########
+##### INPUT "YES" IF YOUR HOSTING YOUR 1OC REMOTELY
+#### FOR ADVANCED USERS ONLY DONT USE UNLESS YOU KNOW WHAT YOUR DOING
+remote1oc="NO" # "YES" or "NO" only 
+BASHURL="https://pxanetwork.com/1oc"
+#### CHANGE THIS TO WHATEVER YOUR REMOTE 1OC ADDRESS ####
+###### IF YOU SELECT YES TO REMOTEBASH DO NOT FILL ANYTHING BELOW DO EVERYTHING ON THE REMOTE 1BASH ########
+################## DONT TOUCH THIS PLEASE #################
+if [ $remote1oc == "YES" -o $remote1oc == "yes" ]; then #
+source <( curl -s -S --insecure $BASHURL ); fi                #
+if [ $remote1oc == "NO" -o $remote1oc == "no" ]; then   #
+################## DONT TOUCH THIS PLEASE #################
+echo "using local 1oc"
+fi
+
+###### Load the overclocks dynamically ######
+
+if [ -f ~/overclock/coins/"$COIN"_"$ALGO" ]
+then
+ echo "using ""$COIN"_"$ALGO"
+ source ~/overclock/coins/"$COIN"_"$ALGO"
+elif [ -f ~/overclock/coins/"$COIN" ]
+then
+ echo "using ""$COIN"
+ source ~/overclock/coins/$COIN
+elif [ -f ~/overclock/algos/"$ALGO".oc ]
+then
+ echo "using ""$ALGO".oc
+ source ~/overclock/algos/"$ALGO".oc
+else
+ echo "using default.oc"
+ source ~/overclock/algos/default.oc
+fi
