@@ -1,0 +1,69 @@
+#!/bin/bash
+###########################################
+## Make your active config changes here  ##
+## For notes on usage see below          ##
+## # # # # # # # # # # # # # # # # # # # ##############
+## Three mandatory settings: COIN, ALGO, POOL_CHOSEN ##
+#######################################################
+
+COIN="XVG"
+#COIN="ZEN"
+
+#ALGO="EQUIHASH"
+ALGO="X17"
+
+#POOL_CHOSEN="MININGPOOLHUB"
+POOL_CHOSEN="SUPRNOVA"
+
+#MINER_CHOSEN="alccminer" ## comment out to use default set in the overclock files, this overrides any overclock files setting
+
+## if you need custom password arguments you can do that here or in the pools ##
+
+if [[ $POOL_CHOSEN == "SUPRNOVA"&&$ALGO == "X17" ]]
+then
+ PASSWORD_OVERRIDE="password,d=0.050"
+fi
+
+INDIVIDUAL_CLOCKS="YES"        ## "YES" or "NO"
+INDIVIDUAL_TARGET_TEMPS="YES"  ## "YES" or "NO"
+INDIVIDUAL_POWERLIMIT="YES"    ## "YES" or "NO"
+
+## More advanced setting options can be found in the 1bash file ##
+
+
+
+  #################
+#### Usage notes ####
+#####################
+##
+## Pool Configurations
+## -------------------
+## For each pool you wish to use in the ~/pools/ directory you should only need
+## to set three properties:
+##      WORKERNAME="your_worker_name"
+##      USERNAME="your_username_OR_wallet_address"
+##      PASSWORD="password"
+##
+## Note: the USERNAME on anonymous mining pools is your coin wallet address and will have to be set per coin in the pool file
+## Note: there are default files ANONYMOUS_SAMPLE and LOGIN_SAMPLE which you can use to add new pools
+##
+## Starting Mining
+## ---------------
+## Three mandatory settings in THIS file: COIN, ALGO, POOL_CHOSEN
+## If you miner is not starting, check these three match a configured pool first
+## 
+## The INDIVIDUAL settings in this file will enable or disable per card overclocking:
+##     INDIVIDUAL_CLOCKS, INDIVIDUAL_TARGET_TEMPS, INDIVIDUAL_POWERLIMIT
+##
+## Overclocking (and default miner choice)
+## ---------------------------------------
+## Card clocking is decided based on the existence of a config file. When you start the miner the 
+## folder is checked in order of priority:
+##     1) ~/overclock/coins for a custom COIN config
+##     2) ~/overclock/algos for a default per ALGO
+##     3) ~/overclock/default.oc is used but this has negligible overclocks and a default usage of ccminer
+##     
+## NOTE: for reasons of stability the default MINER and MINER_INTENSITY are set in the overclock files but
+##       can easily be overriden in this file by uncommenting the #MINER_CHOSEN property
+##
+#####################

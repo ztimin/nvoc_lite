@@ -1,11 +1,5 @@
 #!/bin/bash
-## Set your defaults ##################
-
-USERNAME="miningisfun"
-WORKERNAME="86753099"
-MINER_ADDRESS="$USERNAME"."$WORKERNAME"
-MINER_ALGO="$ALGO"
-PASSWORD="password"
+source ~/pools/SUPRNOVA.defaults
 
 ## checking for a password override from 1active ########
 if [ -z $PASSWORD_OVERRIDE ]
