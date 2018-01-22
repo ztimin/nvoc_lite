@@ -1,11 +1,5 @@
 #!/bin/bash
-## Set your defaults ##################
-
-USERNAME="miningisfun"
-WORKERNAME="86753099"
-MINER_ADDRESS="$USERNAME"."$WORKERNAME"
-MINER_ALGO="$ALGO"
-PASSWORD="password"
+source ~/pools/MININGPOOLHUB.defaults
 
 if [ -z $PASSWORD_OVERRIDE ]
 then
@@ -55,7 +49,6 @@ case $COIN in
      ;;
  "EXP")
      MINER_POOL="us-east.ethash-hub.miningpoolhub.com"
-     MINER_PORT="20596"
      if [ $MINER == "qtminer" -o $MINER_CHOSEN == "qtminer" ]
      then
       MINER_PORT="20567"
@@ -105,11 +98,13 @@ case $COIN in
  "XMY")
      MINER_POOL="hub.miningpoolhub.com"
      if [ "$ALGO" == "myr-groestl" -o "$ALGO" == "myr-gr" ]
+     then
       MINER_PORT="20479"
      elif [ "$ALGO" == "skein" ]
      then
       MINER_PORT="20528"
      elif [ "$ALGO" == "yescrypt" ]
+     then
       MINER_PORT="20577"
      fi
      ;;

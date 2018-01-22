@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "using ZEN oc"
 
 ################################################
 ## Set (or don't) your custom card overclocks ##
