@@ -2,7 +2,7 @@
 source ~/1active
 source ~/1oc
 ## Do not remove: Dynamically set pool and miner (if overriden) from 1active choice ##
-source ~/pools/"$POOL_CHOSEN"
+source ~/pools/templates/"$POOL_CHOSEN"
 if [ -n "$MINER_CHOSEN" ]
 then 
  MINER="$MINER_CHOSEN"
