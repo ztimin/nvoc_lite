@@ -1,5 +1,11 @@
 #!/bin/bash
 
+## checking for a password override from 1active ########
+if [ -n $PASSWORD_OVERRIDE ]
+then
+ MINER_PWD=$PASSWORD_OVERRIDE
+fi
+
 if [ "$MINER" == "alccminer" ]
 then
  miner_start1

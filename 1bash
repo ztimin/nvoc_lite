@@ -168,20 +168,14 @@ fi
 
 ########################################################################################
 
-# Set the miner password
-MINER_PWD="x"
-
-ZM_or_EWBF="EWBF"  # choose  ZM  or  EWBF
 
 #DSTM ZM  Miner optional arguments add "--telemetry=$IPW:42000" if you want web info
 ZM_OPTS="--telemetry=$IPW:42000"
-
+ZM_or_EWBF="EWBF"  # choose  ZM  or  EWBF
 #EWBF ZEC Miner version
 EWBF_VERSION="3_4" # choose 3_3  or  3_4
 #EWBF ZEC Miner optional arguments. add "--api $IPW:42000" if you want web info
 EWBF_OPTS="--api $IPW:42000"
-# change EWBF_PERCENT to alter donation percent for EWBF Miner
-EWBF_PERCENT="0"
 ###############################################
 # AUTO ALGO OR MANUAL ALGO SECTION
 # Select if to if you want to use auto algo intensity. YES - NO

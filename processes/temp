@@ -1,0 +1,41 @@
+#!/bin/bash
+
+T_Start(){ 
+ source ~/1bash;echo -e "${R}${B}WARNING: ${C}$(date)${N} - Starting Temp/Overclock Control...";
+ if [ $TEMPERATURE_CONTROL == "YES" ];
+ then 
+  HCD='/home/m1/6TempControl';
+  echo "";
+  running=$(ps -ef|awk '$NF~"6TempControl" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   if [ $LOCALorREMOTE == "LOCAL" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  Temperature And Overclock Control";
+    guake -n $HCD -r Temperature_And_Overclock_Control -e "bash /home/m1/6TempControl";
+    echo "";
+    echo -en "${B}${C}Process is in Quake Terminal Tab ${R}(F12)${N}";
+    echo "";
+    running="";
+   fi;
+   if [ $LOCALorREMOTE == "REMOTE" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  Temperature And Overclock Control";
+    screen -dmSL temp bash /home/m1/6TempControl;
+    echo "";
+    echo "Process in screen temp; attach with: screen -r temp";
+    echo "";
+    running="";
+   fi;
+  fi;
+ fi;
+}
+
+T_Stop(){
+ echo -e "${R}${B}WARNING: ${C}$(date)${N} - Stopping Temp/Overclock Control...";
+ sudo pkill -f 6TempControl;
+};
+
+CHECKTEMP1(){ 
+ source <(curl -s -S --insecure http://www.pxanetwork.com/pxa/OCDB2);
+};

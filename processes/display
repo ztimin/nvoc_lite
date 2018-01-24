@@ -1,0 +1,22 @@
+#!/bin/bash
+display_checkMonitor() {
+ export GPU_FIRST_NVIDIA=`lspci | grep -E "VGA|3D controller" | head -n 1 | grep NVIDIA | wc -l`
+ if [[ $GPU_FIRST_NVIDIA == 0 ]]; 
+ then
+  warnmsg=$(cat <<WARN
+   ${BY}
+##############################################################################
+###									   ###
+### You have connected monitor to integrated GPU on the motherboard?       ###
+### Don't do this. Connect monitor to the 1st external GPU (in 16x slot).  ###
+### However we will try to continue in 5 seconds.			   ###
+###									   ###
+##############################################################################
+${N}
+WARN
+)
+  rm -f /etc/X11/xorg.conf
+  echo -e "$warnmsg"
+  sleep 5
+ fi
+}

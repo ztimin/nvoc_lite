@@ -1,16 +1,6 @@
 #!/bin/bash
 source ~/pools/SUPRNOVA.defaults
 
-## checking for a password override from 1active ########
-if [ -z $PASSWORD_OVERRIDE ]
-then
- PASSWORD=$PASSWORD_OVERRIDE
-fi
-
-#######################################
-
-MINER_PWD="$PASSWORD"
-
 ## Pool ports #########################
 
 case $COIN in

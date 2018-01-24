@@ -1,0 +1,51 @@
+#!/bin/bash
+
+Make_Logs_WDOG(){
+ LOG1_FILE="/home/m1/Logs/5_wdog_log";
+ echo -e "${B}${Y}Displaying the last 20 lines of Restart Logs${N}";
+ tail -20 $LOG1_FILE;
+ echo "";
+ echo -e "${B}${Y}Displaying the last 20 lines of WatchDog Alert Logs${N}";
+ ALERT1_LOG_FILE="/home/m1/Alerts/7_wdog_alertlog";
+ tail -20 $ALERT1_LOG_FILE;
+ if [ $TELEGRAM_TYPE != "papampi" -o $TELEGRAM_ALERTS == "NO" ];
+ then 
+  echo -e "${B}${Y}$(date)${N} - ${C}Starting WatchDog script.${N}"|tee -a ${LOG1_FILE};
+ fi;
+ if [[ $TELEGRAM_TYPE == "papampi"&&$TELEGRAM_ALERTS == "YES" ]];
+ then 
+  echo -e "${B}${Y}$(date)${N} - ${C}Starting WatchDog script.${N}"|tee -a ${LOG1_FILE};
+ fi;
+ echo "";
+ for i in {16..21};
+ do 
+  echo -en "\e[42;4;${i}m ";
+ done;
+ echo -en "${B}WatchDog $WDOG_VER edited by PoisonXA - Activated${N}";
+ for i in {21..16};
+ do 
+  echo -en "\e[42;4;${i}m \e[0m";
+ done;
+ echo "";
+ echo "";
+};
+
+Clear_Logs1(){
+ cd /home/m1;
+ >/home/m1/Logs/5_wdog_log;
+ >/home/m1/Logs/6_autotemplog;
+ >/home/m1/Logs/6_autooclog;
+ >/home/m1/Alerts/6_autooclastlog;
+ >/home/m1/Logs/current-profit;
+ >/home/m1/Logs/algo-log;
+ >/home/m1/Alerts/7_wdog_alertlog;
+ >/home/m1/Alerts/6_temp_alertlog;
+ >/home/m1/Logs/8_wtmautoswitchlog;
+ >/home/m1/Logs/top_coin;
+ >/home/m1/Alerts/WTM_switch_history;
+ >/home/m1/Logs/WTM_current_profit;
+ >/home/m1/Alerts/WTM_24H_REV;
+ >/home/m1/Logs/WTM_current_revenue;
+ >/home/m1/Logs/screenlog.0;
+ echo "Cleared.";
+};

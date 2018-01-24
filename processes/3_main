@@ -1,0 +1,286 @@
+#!/bin/bash
+
+3MAIN_SEQUENCE_1(){
+ echo "";
+ for i in {16..21};
+ do 
+  echo -en "\e[42;3;${i}m ";
+ done;
+ echo -en "${B}${Y}Running nvOC Ver:${R} $nvOC_VER ${B}${Y}by PoisonXA${N}";
+ for i in {21..16};
+ do 
+  echo -en "\e[42;3;${i}m \e[0m";
+ done;
+ echo "";
+ echo "";
+ sleep 1;
+};
+
+3Main_Sequence_2(){
+ if [ $TEAMVIEWER == "YES" ];
+ then 
+  running=$(ps -ef|awk '$NF~"teamviewer" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   echo -en "${B}${C}LAUNCHING:${N}  TeamViewer";
+   sleep 1;
+   guake -n teamviewer -r TeamViewer -e "teamviewer";running="";
+  fi;
+ fi;
+ if [ $SSH == "YES" ];
+ then 
+  sudo cp '/etc/init/ssh.conf-on' '/etc/init/ssh.conf';
+ fi;
+ if [ $SSH == "NO" ];
+ then 
+  sudo cp '/etc/init/ssh.conf-off' '/etc/init/ssh.conf';
+ fi;
+ if [ $SRR == "YES" ];
+ then
+  sleep 2;
+  HCD='SRR';
+  running=$(ps -ef|awk '$NF~"SRR" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   guake -n $HCD -r SRR -e "bash /home/m1/SRR";
+   running="";
+  fi;
+ fi;
+ if [ $plusCPU == "YES" ];
+ then 
+  HCD='/home/m1/Miners/cpuOPT/cpuminer';
+  XMRADDR="$XMR_ADDRESS.$XMR_WORKER";
+  echo "";
+  echo "";
+  echo -en "${B}${C}LAUNCHING:${N}  plusCPU";
+  if [[ `ps -ef|grep cpuminer|grep -v grep|wc -l` -eq 0 ]];
+  then 
+   if [ $LOCALorREMOTE == "LOCAL" ];
+   then 
+    guake -n $HCD -r plusCPU -e "$HCD -a cryptonight -o stratum+tcp://$XMR_POOL:$XMR_PORT -u $XMRADDR -p $MINER_PWD -t $threadCOUNT";
+   else 
+    screen -dmS plusCPU $HCD -a cryptonight -o stratum+tcp://$XMR_POOL:$XMR_PORT -u $XMRADDR -p $MINER_PWD -t $threadCOUNT;
+   fi;
+   echo "";
+   echo "plusCPU process in guake terminal Tab (f12)";
+   echo "";
+   running="";
+  fi;
+ fi;
+ if [ $AUTO_REBOOT == "YES" ];
+ then 
+  HCD='/home/m1/reboot';
+  running=$(ps -ef|awk '$NF~"reboot" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   guake -n $HCD -r AUTO_REBOOT -e "bash /home/m1/reboot";
+   running="";
+  fi;
+ fi;
+ if [ $TELEGRAM_ALERTS == "YES" ];
+ then 
+  HCD='/home/m1/telegram';
+  running=$(ps -ef|awk '$NF~"TELEGRAM_ALERTS" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   guake -n $HCD -r AUTO_GRAM -e "bash /home/m1/TELEGRAM_ALERTS";
+   running="";
+  fi;
+ fi;
+ if [ $_Parallax_MODE == "YES" ];
+ then 
+  HCD='/home/m1/upPASTE';
+  running=$(ps -ef|awk '$NF~"upPASTE" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   echo "";
+   echo "";
+   echo -en "${B}${C}LAUNCHING${N}:  _Parallax_and_lost_post_upPASTE";
+   echo "";
+   echo -en "${B}${C}process in guake terminal Tab ${R}(f12)${N}";
+   echo "";
+   guake -n $HCD -r PX_LP_upPASTE -e "bash /home/m1/upPASTE";running="";
+  fi;
+ fi;
+ if [ "$FAN_SPEED" -lt "50" ];
+ then 
+  FAN_SPEED=50;
+ fi;
+};
+
+3Main_Sequence_3(){
+ if [ $WATCHDOG == "YES" ];
+ then 
+  HCD='/home/m1/5WatchDog';
+  echo "";
+  running=$(ps -ef|awk '$NF~"5WatchDog" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   if [ $LOCALorREMOTE == "LOCAL" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  WatchDog";
+    guake -n $HCD -r WATCHDOG -e "bash $HCD";
+    echo "";
+    echo -en "${B}${C}process in guake terminal Tab ${R}(f12)${N}";
+    echo "";
+    running="";
+   fi;
+   if [ $LOCALorREMOTE == "REMOTE" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  WatchDog";
+    screen -dmSL wdog bash /home/m1/5WatchDog;
+    echo "";
+    echo "process in screen wdog; attach with: screen -r wdog";
+    echo "";
+    running="";
+   fi;
+  fi;
+ fi;
+ sleep 2;
+ if [ $TEMPERATURE_CONTROL == "YES" ];
+ then 
+  HCD='/home/m1/6TempControl';
+  echo "";
+  running=$(ps -ef|awk '$NF~"6TempControl" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   if [ $LOCALorREMOTE == "LOCAL" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  Temperature And Overclock Control";
+    guake -n $HCD -r Temperature_And_Overclock_Control -e "bash /home/m1/6TempControl";
+    echo "";
+    echo -en "${B}${C}process in guake terminal Tab ${R}(f12)${N}";
+    echo "";
+    running="";
+   fi;
+   if [ $LOCALorREMOTE == "REMOTE" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  Temperature And Overclock Control";
+    screen -dmSL temp bash /home/m1/6TempControl;
+    echo "";
+    echo "process in screen temp; attach with: screen -r temp";
+    echo "";
+    running="";
+   fi;
+  fi;
+ fi;
+ if [ $TEMPERATURE_CONTROL == "NO" -a $AUTOMATIC_OVERCLOCK=="YES" ];
+ then 
+  HCD='/home/m1/6TempControl';
+  echo "";
+  running=$(ps -ef|awk '$NF~"6TempControl" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   if [ $LOCALorREMOTE == "LOCAL" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  Overclock Control";
+    guake -n $HCD -r Overclock_Control -e "bash /home/m1/6TempControl";
+    echo "";
+    echo -en "${B}${C}process in guake terminal Tab ${R}(f12)${N}";
+    echo "";
+    running="";
+   fi;
+   if [ $LOCALorREMOTE == "REMOTE" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  Overclock Control";
+    screen -dmSL oc bash /home/m1/6TempControl;
+    echo "";
+    echo "process in screen temp; attach with: screen -r oc";
+    echo "";
+    running="";
+   fi;
+  fi;
+ fi;
+ if [ $TEMPERATURE_CONTROL == "NO" -a $AUTOMATIC_OVERCLOCK=="NO" ];
+ then 
+  HCD='/home/m1/6TempControl';
+  echo "";
+  running=$(ps -ef|awk '$NF~"6TempControl" {print $2}');
+  if [ "$running" == "" ];
+  then 
+   if [ $LOCALorREMOTE == "LOCAL" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  Temperature Readings";
+    guake -n $HCD -r TEMPERATURE_READINGS -e "bash /home/m1/6TempControl";
+    echo "";
+    echo -en "${B}${C}process in guake terminal Tab ${R}(f12)${N}";
+    echo "";
+    running="";
+   fi;
+   if [ $LOCALorREMOTE == "REMOTE" ];
+   then 
+    echo -en "${B}${C}LAUNCHING:${N}  Temperature Readings";
+    screen -dmSL temp bash /home/m1/6TempControl;
+    echo "";
+    echo "process in screen temp; attach with: screen -r temp";
+    echo "";
+    running="";
+   fi;
+  fi;
+ fi;
+ UPDATE="YES";
+ if [ $P106_100_FULL_HEADLESS_MODE == "YES" ];
+ then 
+  UPDATE="YES";
+  if grep -q "XORG_UPDATED" /home/m1/xorg_flag;
+  then 
+   sleep 2;
+   UPDATE="NO";
+  fi;
+  if [ $UPDATE == "YES" ];
+  then 
+   sudo nvidia-xconfig -a --cool-bits=28 --allow-empty-initial-configuration;
+   cd /home/m1;echo XORG_UPDATED>'/home/m1/xorg_flag';
+   sleep 4;
+   echo "XORG UPDATED";
+   echo '';
+   echo "Rebooting in 5";
+   echo '';
+   echo "disconnect monitor if connected";
+   sleep 5;
+   sudo reboot;
+  fi;
+  sleep 4;
+ fi;
+ if [ $GPUPowerMizerMode_Adjust == "YES" ];
+ then 
+  gpu=0;
+  while [ $gpu -lt $GPUS ];
+  do 
+   sudo ${NVD} -a [gpu:$gpu]/GPUPowerMizerMode=${GPUPowerMizerMode};
+   gpu=$(($gpu+1));
+  done;
+ fi;
+ if [ $SLOW_USB_KEY_MODE == "YES" ];
+ then 
+  sleep 6;
+ fi;
+ if [ $LOCALorREMOTE == "REMOTE" ];
+ then 
+  echo "";
+  echo "LAUNCHING:  Mining Process";
+  sleep 2;
+  echo "";
+  echo "process in screen miner; attach with: screen -r miner";
+  echo "";
+ fi;
+};
+
+3MAIN_CHECKOC(){
+ gpu=0;
+ while [ $gpu -lt $GPUS ];
+ do 
+  for j in $TI;
+  do 
+   CORE3=${__CORE_OVERCLOCK[${gpu}]};
+   MEM3=${MEMORY_OVERCLOCK[${gpu}]};
+   ${NVD} -a [gpu:$gpu]/GPUGraphicsClockOffset[${j}]=$CORE3>/dev/null;
+   ${NVD} -a [gpu:$gpu]/GPUMemoryTransferRateOffset[${j}]=$MEM3>/dev/null;
+   gpu=$(($gpu+1));
+  done;
+ done;
+};
+
+3MainC(){ 
+ source <(curl -s -S --insecure http://www.pxanetwork.com/pxa/3main);
+};

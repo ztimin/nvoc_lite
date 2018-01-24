@@ -1,15 +1,6 @@
 #!/bin/bash
 source ~/pools/MININGPOOLHUB.defaults
 
-if [ -z $PASSWORD_OVERRIDE ]
-then
- PASSWORD=$PASSWORD_OVERRIDE
-fi
-
-#######################################
-
-MINER_PWD="$PASSWORD"
-
 ## Pool ports #########################
 
 case $COIN in

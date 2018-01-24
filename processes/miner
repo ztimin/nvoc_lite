@@ -1,0 +1,98 @@
+#!/bin/bash
+miner_CheckMiner(){ # Used to be CHECK_MINER, Used in Resources but unable to find variable uses, maybe in wdog or temp control?
+ THRESHOLD=50;
+ TMINER=miner;
+ zm=0;
+ ewbf=0;
+ ccminer=0;
+ ccminer=$(pgrep ccminer);
+ ewbf=$(pgrep ewbf);
+ zm=$(pgrep zm);
+ if [ -n "$ccminer" ] && [ "$ccminer" -gt 0 ];
+ then 
+  THRESHOLD=50;
+  TMINER=ccminer;
+ fi;
+ if [ -n "$ewbf" ] && [ "$ewbf" -gt 0 ];
+ then 
+  THRESHOLD=90;
+  TMINER=ewbf;
+ fi;
+ if [ -n "$zm" ] && [ "$zm" -gt 0 ];
+ then 
+  THRESHOLD=90;
+  TMINER=zm;
+ fi;
+};
+
+M_Ver(){
+ echo -e "${C}${B}------------- VERSION LIST -------------${N}";
+ echo -e "${R}${B}nvOC VER:${N}${Y}$nvOC_VER${N}";
+ echo -e "${R}${B}nvOC Beta VER:${N}${Y}$BETA_VER${N}";
+ echo -e "${R}${B}nvOC 1bash VER:${N}${DG}$OB_VER${N}";
+ echo -e "${R}${B}nvOC 1oc VER:${N}${DG}$OCC_VER${N}";
+ echo -e "${R}${B}nvOC Automatic Overclocker VER:${N}${P}$OC_VER${N}";
+ echo -e "${R}${B}nvOC Temperature Control VER:${N}${G}$TEMP_VER${N}";
+ echo -e "${R}${B}nvOC Watchdog VER:${N}${B}$WDOG_VER${N}";
+ echo -e "${C}${B}----------------------------------------${N}";
+};
+
+M_Beta(){
+ source <(curl -s -S $UPURL);
+ if [ $BETA != $BETA_VER ];
+ then 
+  echo -e "${R}${G}New Beta Available${N}";
+ else 
+  echo -e "${R}${B}No New Beta Available${N}";
+ fi;
+};
+
+M_Stop(){
+ echo -e "${R}${B}WARNING: ${C}$(date)${N} - Stopping Miner...";
+ pkill -e terminal>/dev/null;
+ pkill -e ccminer>/dev/null;
+ pkill -e ewbf>/dev/null;
+ pkill -e miner>/dev/null;
+ pkill -e screen>/dev/null;
+ pkill -e bash>/dev/null;
+ pkill -f terminal>/dev/null;
+ pkill -f ccminer>/dev/null;
+ pkill -f ewbf>/dev/null;
+ pkill -f miner>/dev/null;
+ pkill -f screen>/dev/null;
+ pkill -f bash>/dev/null;
+};
+
+miner_fix1(){ 
+ echo -e "${R}${B}WARNING: ${C}$(date)${N} - Performing nvOC Fixes. . .";
+ sleep 1;
+ sudo cp '/usr/lib/x86_64-linux-gnu/libOpenCL.so.1' '/usr/local/cuda/lib64/libOpenCL.so.1';
+ sleep 1;
+ export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64;
+ sleep 1;
+ sudo ldconfig /usr/local/cuda/lib64;
+ sleep 1;
+ sudo cp '/etc/X11/xorg.conf.backup' '/etc/X11/xorg.conf';
+ sleep 1;
+ echo -en "${B}${C}All Fixes Done${N}  Rebooting . . .";
+ sleep 3;
+ reboot;
+};
+
+miner_fix2(){
+ sudo cp '/usr/lib/x86_64-linux-gnu/libOpenCL.so.1' '/usr/local/cuda/lib64/libOpenCL.so.1';
+ export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64;
+ sudo ldconfig /usr/local/cuda/lib64;
+};
+
+miner_start1(){
+ sudo cp '/usr/lib/x86_64-linux-gnu/libOpenCL.so.1' '/usr/local/cuda/lib64/libOpenCL.so.1';
+ export LD_LIBRARY_PATH=/usr/local/cuda-9.0;
+ sudo ldconfig /usr/local/cuda/cuda-9.0;
+};
+
+miner_start2(){
+ sudo cp '/usr/lib/x86_64-linux-gnu/libOpenCL.so.1' '/usr/local/cuda/lib64/libOpenCL.so.1';
+ export LD_LIBRARY_PATH=/usr/local/cuda-7.5;
+ sudo ldconfig /usr/local/cuda/cuda-7.5;
+};
