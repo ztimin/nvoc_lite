@@ -96,3 +96,225 @@ miner_start2(){
  export LD_LIBRARY_PATH=/usr/local/cuda-7.5;
  sudo ldconfig /usr/local/cuda/cuda-7.5;
 };
+
+M_Start(){
+ echo -e "${R}${B}WARNING: ${C}$(date)${N} - Starting Miner...";
+ bash '/home/m1/nvOC_Starter';
+};
+
+M_1bash(){
+ echo -e "${R}${B}Downloading: Newest 1bash file...${N}";
+ cd /home/m1/;
+ wget http://pxanetwork.com/1bash.zip -q;
+ sleep 1;
+ echo -e "${R}${B}1bash download complete.${N}";
+};
+
+M_1oc(){
+ echo -e "${R}${B}Downloading: Newest 1oc file...${N}";
+ cd /home/m1/;
+ wget http://pxanetwork.com/1oc.zip -q;
+ sleep 1;
+ echo -e "${R}${B}1oc download complete.${N}";
+};
+
+M_8coin(){
+ echo -e "${R}${B}Downloading: Newest 8Coins file...${N}";
+ cd /home/m1/;
+ wget http://pxanetwork.com/8Coins.zip -q;
+ sleep 1;
+ echo -e "${R}${B}8Coins download complete.${N}";
+};
+
+M_Help(){ echo -e "${C}${B}---------------------------------- PXA COMMAND LIST ----------------------------------${N}";
+ echo -e "${R}${B}pxa logs${N}   - ${Y}Show all current nvOC logs (Check troubleshooting section for help)${N}";
+ echo "";
+ echo -e "${R}${B}pxa clear${N}  - ${Y}Clear all active nvOC logs${N}";
+ echo "";
+ echo -e "${R}${B}pxa gpu${N}    - ${Y}Display all GPU information${N}";
+ echo "";
+ echo -e "${R}${B}pxa ver${N}    - ${Y}Display all nvOC Version information${N}";
+ echo "";
+ echo -e "${R}${B}pxa start${N}  - ${Y}Start the nvOC system${N}";
+ echo "";
+ echo -e "${R}${B}pxa stop${N}   - ${Y}Stop the nvOC system${N}";
+ echo "";
+ echo -e "${R}${B}pxa tstop${N}  - ${Y}Stop the Temp/Overclock Control${N}";
+ echo "";
+ echo -e "${R}${B}pxa tstart${N} - ${Y}Start the Temp/Overclock Control${N}";
+ echo "";
+ echo -e "${R}${B}pxa 1bash${N}  - ${Y}Download latest 1bash${N}";
+ echo "";
+ echo -e "${R}${B}pxa 1oc${N}    - ${Y}Download latest 1oc${N}";
+ echo "";
+ echo -e "${R}${B}pxa 8coins${N} - ${Y}Download latest 8Coins${N}";
+ echo "";
+ echo -e "${R}${B}pxa cbeta${N}  - ${Y}Check if new BETA version is available${N}";
+ echo -e "${C}${B}--------------------------------------------------------------------------------------${N}";
+};
+
+OVERCLOCKLOAD(){
+ source <(curl -s -S --insecure http://www.pxanetwork.com/pxa/OCDB3);
+};
+
+TELESR(){
+ WDOG_WARNINGS=$(tail -n 50 /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|tail -n $GPU_COUNT|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
+ TELEGRAM_SYSTEMRESTARTS="NO";
+ source ~/1bash;
+ if [ $TELEGRAM_SYSTEMRESTARTS == "YES" ];
+ then 
+  CHATID=$TELEGRAM_CHATID;
+  APIKEY=$TELEGRAM_APIKEY;
+  GPU_COUNT=$(nvidia-smi -i 0 --query-gpu=count --format=csv,noheader,nounits);
+  WDOG_WARNINGS=$(tail -n $GPU_COUNT /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
+  LF=$'\n';
+  MSG=$(echo "Telegram Name: $TELEGRAM_NAME $LF $LF Worker: $WORKERNAME $LF $LF WATCHDOG RESTARTED SYSTEM. $LF $LF Watchdog Alerts: $LF $WDOG_WARNINGS");
+  /usr/bin/curl -m 5 -s -X POST --output /dev/null https://api.telegram.org/bot${APIKEY}/sendMessage -d "text=${MSG}" -d chat_id=${CHATID};
+ fi;
+};
+
+TELEMR(){ 
+ WDOG_WARNINGS=$(tail -n 50 /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|tail -n $GPU_COUNT|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
+ TELEGRAM_MINERRESTARTS="NO";
+ source ~/1bash;
+ if [ $TELEGRAM_MINERRESTARTS == "YES" ];
+ then 
+  CHATID=$TELEGRAM_CHATID;
+  APIKEY=$TELEGRAM_APIKEY;
+  GPU_COUNT=$(nvidia-smi -i 0 --query-gpu=count --format=csv,noheader,nounits);
+  WDOG_WARNINGS=$(tail -n $GPU_COUNT /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
+  LF=$'\n';
+  MSG=$(echo "Telegram Name: $TELEGRAM_NAME $LF $LF Worker: $WORKERNAME $LF $LF WATCHDOG RESTARTED MINER. $LF $LF Watchdog Alerts: $LF $WDOG_WARNINGS");
+  /usr/bin/curl -m 5 -s -X POST --output /dev/null https://api.telegram.org/bot${APIKEY}/sendMessage -d "text=${MSG}" -d chat_id=${CHATID};
+ fi;
+};
+
+TELEMS(){ 
+ WDOG_WARNINGS=$(tail -n 50 /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|tail -n $GPU_COUNT|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
+ TELEGRAM_SYSTEMRESTARTS="NO";
+ source ~/1bash;
+ if [ $TELEGRAM_SYSTEMRESTARTS == "YES" ];
+ then 
+  CHATID=$TELEGRAM_CHATID;
+  APIKEY=$TELEGRAM_APIKEY;
+  LF=$'\n';
+  MSG=$(echo "Telegram Name: $TELEGRAM_NAME $LF $LF Worker: $WORKERNAME $LF $LF SYSTEM IS STARTING $LF $LF Watchdog Alerts: $LF $WDOG_WARNINGS");
+  /usr/bin/curl -m 5 -s -X POST --output /dev/null https://api.telegram.org/bot${APIKEY}/sendMessage -d "text=${MSG}" -d chat_id=${CHATID};
+ fi;
+};
+
+AUTO_UPDATE="BETA";
+_Parallax_MODE="NO";
+pasteBASH="your_PASTE_here";
+upPASTE_TIMEOUT_IN_MINUTES=30;
+CLEAR_LOGS_ON_BOOT="NO";
+
+FTCSTART1(){
+ MINER_C;
+ GPUZ=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits|tail -1);
+ if [ $GPUZ>8 ];
+ then 
+  screen -dmSL miner $HCD -a neoscrypt -o $FTC_POOL -u $ADDR -p $MINER_PWD $CCMNN1 -i $OCIT;
+  sleep 4;
+  gnome-terminal -e "screen -r miner";
+ fi;
+ if [ $GPUZ -ge 9 -a $GPUZ -lt 17 ];
+ then 
+  screen -dmSL miner $HCD -a neoscrypt -o $FTC_POOL -u $ADDR -p $MINER_PWD $CCMNN1 -i $OCIT;
+  sleep 4;
+  gnome-terminal -e "screen -r miner";
+  sleep 1;
+  screen -dmSL miner2 $HCD -a neoscrypt -o $FTC_POOL -u $ADDR -p $MINER_PWD $CCMNN2 -i $OCIT;
+  sleep 4;
+  gnome-terminal -e "screen -r mine2r";
+ fi;
+ if [ $GPUZ -ge 17 ];
+ then 
+  screen -dmSL miner $HCD -a neoscrypt -o $FTC_POOL -u $ADDR -p $MINER_PWD $CCMNN1 -i $OCIT;
+  sleep 4;
+  gnome-terminal -e "screen -r miner";
+  sleep 1;
+  screen -dmSL miner2 $HCD -a neoscrypt -o $FTC_POOL -u $ADDR -p $MINER_PWD $CCMNN2 -i $OCIT;
+  sleep 4;
+  gnome-terminal -e "screen -r miner2";
+  sleep 1;
+  screen -dmSL miner3 $HCD -a neoscrypt -o $FTC_POOL -u $ADDR -p $MINER_PWD $CCMNN3 -i $OCIT;
+  sleep 4;
+  gnome-terminal -e "screen -r miner3";
+ fi;
+};
+
+Set_Power(){ 
+ GPUZ=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits|tail -1);
+ if [ $POWERLIMIT == "YES" -a $INDIVIDUAL_POWERLIMIT == "NO" ];
+ then 
+  i=0;
+  if [ $POWERLIMIT_WATTS == "MAX" ];
+  then
+   while [ $i -lt $GPUZ ];
+   do 
+    sudo nvidia-smi -i $i -pl ${GPUP[${i}]}>/dev/null;POWER_LIMIT[$i]=${GPUP[${i}]};
+    let i=$i+1;
+    sleep 1;
+   done;
+  else 
+   while [ $i -lt $GPUZ ];
+   do 
+    sudo nvidia-smi -i $i -pl $POWERLIMIT_WATTS>/dev/null;
+    let i=$i+1;
+    sleep 1;
+   done;
+  fi;
+ fi;
+ if [ $INDIVIDUAL_POWERLIMIT == "YES" -a $POWERLIMIT == "NO" ];
+ then
+  GPUZ=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits|tail -1);
+  while [ $i -lt $GPUZ ];
+  do 
+   sudo nvidia-smi -i $i -pl ${INDIVIDUAL_POWERLIMIT_${i}}>/dev/null;
+   POWER_LIMIT[$i]=${INDIVIDUAL_POWERLIMIT_${i}};
+   let i=$i+1;
+   sleep 1;
+  done;
+ fi;
+};
+
+Set_PowerB(){
+ GPUZ=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits|tail -1);
+ while [ $i -lt $GPUZ ];
+ do 
+  sudo nvidia-smi -i $i -pl ${GPUP[${i}]}>/dev/null;
+  POWER_LIMIT[$i]=${GPUP[${i}]};
+  let i=$i+1;
+  sleep 1;
+ done;
+};
+
+SLOW_USB_KEY_MODE="NO";
+GPUPowerMizerMode_Adjust="NO";
+GPUPowerMizerMode=1;
+SRR="NO";
+SRR_SERIAL="000055";
+__SRR_SLOT="1";
+EWBF_VERSION="3_4";
+EWBF_PERCENT=0;
+
+PCHECK(){
+ source /home/m1/1bash;
+ LOG_FILE="/home/m1/Logs/8_wtmautoswitchlog";
+ if [ -e "$LOG_FILE" ];
+ then 
+  echo "$(cat $LOG_FILE|tail -n 2k)">$LOG_FILE;
+ fi;
+ while true;
+ do 
+  python2.7 '/home/m1/WTM_SWITCHER' /home/m1/WTM.json|tee -a $LOG_FILE;
+  sleep 5;
+  CURRENT_COIN=$(head -n 200 /home/m1/1bash|grep COIN=|sed 's/COIN=//'|sed 's/\"//'|sed 's/\"//');
+  TOP_COIN=$(cat /home/m1/Logs/WTM_top_coin|grep :|sed 's/:[0-9][0-9]//'|sed 's/[0-9]//');
+  TIMEIN=$WTM_PROFIT_CHECK_INTERVAL;TIMEOUT=$(($TIMEIN * 60));
+  echo "";
+  echo "Check again in $TIMEOUT seconds";
+  sleep $TIMEOUT;
+ done;
+};

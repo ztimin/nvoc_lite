@@ -3,217 +3,36 @@ source ~/1bash
 source ~/Resources
 3MAIN_SEQUENCE_1
 TMINER=miner
- 
-3Main_Coin_Sequence(){
- gpu_checkCard
- CHECK_I
- miner_fix2
- source ~/miner_prototypes
-}
 
 miner_CheckMiner
 pkill -e $TMINER
 
-if [ "$CLEAR_LOGS_ON_BOOT" == "YES" ]
-then
- sudo bash '/home/m1/clear_logs'
-fi
+3main_clearLogsOnBoot
 
-if [ "$LOCALorREMOTE" == "REMOTE" ]
-then
- export DISPLAY=:0
-fi
+3main_exportDisplay
 
 sudo cp '/usr/lib/x86_64-linux-gnu/libOpenCL.so.1' '/usr/local/cuda/lib64/libOpenCL.so.1'
 
-___1050_or_1050ti="NO"
-
-NORMAL="NO"
-
-P106_100="NO"
-sudo chown -R m1 /tmp/
-sudo chown -R m1 /tmp
-nvidia-smi -L > /tmp/tempa
-
-if grep -q "1050" /tmp/tempa;
-then
- ___1050_or_1050ti="YES"
-fi
-
-if grep -q "1060" /tmp/tempa;
-then
- NORMAL="YES"
-fi
-
-if grep -q "1070" /tmp/tempa;
-then
- NORMAL="YES"
-fi
-
-if grep -q "1080" /tmp/tempa;
-then
- NORMAL="YES"
-fi
-
-if grep -q "1080ti" /tmp/tempa;
-then
- NORMAL="YES"
-fi
-
-if grep -q "P106-100" /tmp/tempa;
-then
- ___1050_or_1050ti="YES"
- P106_100="YES"
-fi
-
-sudo rm -f /tmp/tempa
-XORG="FAIL"
-
-if grep -q "28800" /etc/X11/xorg.conf;
-then
- XORG="OK"
-fi
-
-if [ "$P106_100" == "YES" ]
-then
- XORG="OK"
-fi
-
-if [ "$SLOW_USB_KEY_MODE" == "YES" ]
-then
- sleep 6
-fi
-
-if [ "$XORG" == "FAIL" ]
-then
- echo "Copying NVIDIA Xorg config"
- sudo cp /etc/X11/xorg.conf.backup /etc/X11/xorg.conf
-
- connected_monitor=`nvidia-smi --query-gpu=gpu_bus_id,display_mode --format=csv,noheader | grep Enabled | wc -l`
- echo "Connected monitors: $connected_monitor"
-
- if [[ "$connected_monitor" == 0 ]];
- then 
-  #no connected monitors, emulate connected
-  echo "Emulating connected monitor on Device0 in /etc/X11/xorg.conf"
-  sed -i -e '/^#Device0 ConnectedMonitor BEGIN$/,/^#Device0 ConnectedMonitor END$/c\\tOption "ConnectedMonitor" "DFP-0"\n\tOption "CustomEDID" "DFP-0:etc/edid.bin"' /etc/X11/xorg.conf
- else
-  echo "Connected monitor detected"
- fi
-
- internal=`lspci | grep -E "VGA|3D controller" | head -n 1 | grep -vE "NVIDIA|AMD"`
- [[ -z "$internal" ]] && exit 0
-
- busid=`echo $internal | awk '{print $1}' | sed 's/\./:/'`
-
- echo "Detected internal GPU on bus $busid to be the first one"
- sed -i -e 's/#Screen		0  "Screen0" 0 0/Screen		0  "Screen0" 0 0/' /etc/X11/xorg.conf
-
- sed -i -e "s/PCI:0:02:0/PCI:$busid/" /etc/X11/xorg.conf
- sudo xrandr --fb 1920x1080 > /dev/null
-fi
-
-connected_monitor=`nvidia-smi --query-gpu=gpu_bus_id,display_mode --format=csv,noheader | grep Enabled | wc -l`
-
-if [[ "$connected_monitor" == 0 ]]; 
-then
- sudo xrandr --fb 1920x1080 > /dev/null
-fi
+3main_connectedMonitorCheck
 
 logo
 echo ""
 3MainC
 
-  echo -e "${C}${B}------------------------- IMPORTANT INFORMATION -------------------------${N}"
-IP=$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
-echo ""
-  echo -e "${C}${B}This Rigs IP:${R} $IP${N}"
-echo ""
-  echo -e "${C}${B}This Rigs MAC:${R} $MAC${N}"
-echo ""
-  echo -e "${C}${B}TYPE ${B}${R}pxa ${C}${B}IN CONSOLE FOR A LIST OF COMMANDS${N}"
-echo ""
-  echo -e "${C}${B}-------------------------------------------------------------------------${N}"
-  echo -e "${N}"
-echo ""
-   IDS=$(nvidia-smi --query-gpu=pci.sub_device_id --format=csv,noheader,nounits)
-   i=0
-  echo -e "${C}${B}------------------------------- GPU LIST --------------------------------${N}"
-   for ID in $IDS
-   do
-      V_ID=${ID:6:5}
-      case $V_ID in
-         3842) V_ID="EVGA";;
-         1462) V_ID="MSI";;
-         10DE) V_ID="NVIDIA";;
-         19DA) V_ID="ZOTAC";;
-         807D|1043) V_ID="ASUS";;
-         1458) V_ID="GIGABYTE";;
-         196E) V_ID="PNY";;
-         1569) V_ID="PALIT";;
-      esac
-      MODEL=$(nvidia-smi -i $i --query-gpu=name --format=csv,noheader,nounits | tail -1)
-  echo -e "${C}${B}GPU $i${BBL} $V_ID $MODEL${N}"
-   i=$(($i + 1))
-   done
-  echo -e "${C}${B}-------------------------------------------------------------------------${N}"
-echo ""
-echo -en "${B}${Y}Getting System Ready${N}"
-echo ""
+3main_reportGPU
 
-if [ "$USE_ENVIRONMENTAL_VARIBLES" == "YES" ]
-then
- export GPU_FORCE_64BIT_PTR="0"
- export GPU_MAX_HEAP_SIZE="100"
- export GPU_USE_SYNC_OBJECTS="1"
- export GPU_MAX_ALLOC_PERCENT="100"
- echo ""
- echo ENVIRONMENTAL VARIBLES SET
-fi
+3main_useEnvironmentalVariablesCheck
 
 3Main_Sequence_2
-GPUS=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits | tail -1)
 
-NVD=nvidia-settings
+GPUS=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits | tail -1) # subsequent methods depend on this
+NVD=nvidia-settings # subsequent methods depend on this
 
-if [ "$SLOW_USB_KEY_MODE" == "YES" ]
-then
- sleep 6
-fi
+3main_slowUSBKeyModeCheck
 
 gpu_setClock
 
-if [ "$P106_100_FULL_HEADLESS_MODE" == "NO" ]
-then
- if [ "$AUTOMATIC_OVERCLOCK" == "NO" ]; 
- then
-  if [[ "$__CORE_OVERCLOCK" -gt 0 && "$MEMORY_OVERCLOCK" -gt 0 ]]; 
-  then
-   3MAIN_CHECKOC
-  fi
- fi
-
- if [[ "$MANUAL_FAN" == "YES" ]]
- then
-  gpu=0
-  while [ "$gpu" -lt $GPUS ]
-  do
-   ${NVD} -a [gpu:"$gpu"]/GPUFanControlState=1 > /dev/null
-   ${NVD} -a [fan:"$gpu"]/GPUTargetFanSpeed=${FAN_SPEED} > /dev/null
-   gpu=$(($gpu+1))
-  done
- fi
-
- if [[ "$MANUAL_FAN" == "NO" && "$TEMPERATURE_CONTROL" == "NO" ]]
- then
-  gpu=0
-  while [ $gpu -lt $GPUS ]
-  do
-   ${NVD} -a [gpu:"$gpu"]/GPUFanControlState=0 > /dev/null
-   gpu=$(("$gpu"+1))
-  done
- fi
-fi
+3main_defaultOverclockAndFanChecks_nonP106
 
 3Main_Sequence_3
 3Main_Coin_Sequence
