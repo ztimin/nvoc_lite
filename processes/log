@@ -30,6 +30,85 @@ Make_Logs_WDOG(){
  echo "";
 };
 
+Make_Logs_Temp(){ 
+ if [ $TEMPERATURE_CONTROL == "YES" ];
+ then 
+  echo "";
+  for i in {16..21};
+  do 
+   echo -en "\e[42;4;${i}m ";
+  done;
+  echo -en "${B}TEMPERATURE CONTROL VERSION $TEMP_VER by MAXXIMUS and PoisonXA ARE TURNED ON${N}";
+  for i in {21..16};
+  do 
+   echo -en "\e[42;4;${i}m \e[0m";
+  done;
+  echo "";
+  echo "";
+  sleep 1;
+ fi;
+ if [ $TEMPERATURE_CONTROL == "NO" ];
+ then 
+  echo "";
+  for i in {16..21};
+  do 
+   echo -en "\e[41;4;${i}m ";
+  done;
+  echo -en "${B}TEMPERATURE CONTROL VERSION $TEMP_VER by MAXXIMUS and PoisonXA ARE TURNED OFF${N}";
+  for i in {21..16};
+  do 
+   echo -en "\e[41;4;${i}m \e[0m";
+  done;
+  echo "";
+  echo "";
+  sleep 1;
+ fi;
+ LOG_FILE="/home/m1/Logs/6_autotemplog";
+ echo -e "${B}${Y}Displaying the last 20 lines of Temp Logs${N}";
+ tail -20 $LOG_FILE;
+ OC_FILE="/home/m1/Logs/6_autooclog";
+ OCC_FILE="/home/m1/Alerts/6_autooclastlog";
+ echo -e "${B}${Y}Displaying the last 20 lines of Overclock Logs${N}";
+ tail -20 $OC_FILE;
+ echo -e "${B}${Y}Displaying the last 20 lines of Auto Temp Alert Logs${N}";
+ ALERT_LOG_FILE="/home/m1/Alerts/6_temp_alertlog";
+ tail -20 $ALERT_LOG_FILE;
+ if [ $TELEGRAM_TYPE != "papampi" -o $TELEGRAM_ALERTS == "NO" ];
+ then 
+  echo -e "${B}${Y}$(date)${N} - ${C}Starting autotemp script.${N}"|tee -a ${LOG_FILE};
+ fi;
+ if [[ $TELEGRAM_TYPE == "papampi"&&$TELEGRAM_ALERTS == "YES" ]];
+ then 
+  echo -e "${B}${Y}$(date)${N} - ${C}Starting autotemp script.${N}"|tee -a ${LOG_FILE};
+ fi;
+};
+
+MAKE_WTM_LOGS(){ 
+ source ~/1bash;
+ source ~/8Coins;
+ source ~/1oc;
+ touch /home/m1/Logs/WTM_current_revenue;
+ LOG3_FILE="/home/m1/Logs/8_wtmautoswitchlog";
+ if [[ -e "$LOG_FILE" ]];
+ then 
+  echo "$(cat $LOG3_FILE|tail -n 5k)">$LOG3_FILE;
+ fi;
+ WTM_HISTORY="/home/m1/Alerts/WTM_switch_history";
+ if [[ -e "$WTM_HISTORY" ]];
+ then 
+  echo "$(cat $WTM_HISTORY|tail -n 100)">$WTM_HISTORY;
+ fi;
+ FIRST_COIN="$(echo $WTM_AUTO_SWITCH_COINS|awk -F'[_;]' '{print $1}')";
+ TOP_COIN=$(cat /home/m1/Logs/WTM_top_coin|sed 's/:[0-9]*//');
+ if [ -z $(echo $WTM_AUTO_SWITCH_COINS|grep $TOP_COIN)];
+ then 
+  echo "Last top coin not in current coin list any more, Switch to 1st coin";
+  touch $TOP_COIN;
+  sed -i "s/$COIN/ZZ/g" /home/m1/Logs/WTM_top_coin;
+ fi;
+};
+
+
 Clear_Logs1(){
  cd /home/m1;
  >/home/m1/Logs/5_wdog_log;
