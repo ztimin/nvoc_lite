@@ -1,99 +1,39 @@
 #!/bin/bash
 MINER_C(){
  CCMN=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits|tail -1);
- if [ $CCMN == 0 ];
- then 
-  CCMNN1="-d 0";
- fi;
- if [ $CCMN == 1 ];
- then 
-  CCMNN1="-d 0,1";
- fi;
- if [ $CCMN == 2 ];
- then 
-  CCMNN1="-d 0,1,2";
- fi;
- if [ $CCMN == 3 ];
- then 
-  CCMNN1="-d 0,1,2,3";
- fi;
- if [ $CCMN == 4 ];
- then 
-  CCMNN1="-d 0,1,2,3,4";
- fi;
- if [ $CCMN == 5 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5";
- fi;
- if [ $CCMN == 6 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6";
- fi;
- if [ $CCMN == 7 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7";
- fi;
- if [ $CCMN == 8 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
- fi;
- if [ $CCMN == 9 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9";
- fi;
- if [ $CCMN == 10 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9,10";
- fi;
- if [ $CCMN == 11 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9,10,11";
- fi;
- if [ $CCMN == 12 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9,10,11,12";
- fi;
- if [ $CCMN == 13 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9,10,11,12,13";
- fi;
- if [ $CCMN == 14 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9,10,11,12,13,14";
- fi;
- if [ $CCMN == 15 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9,10,11,12,13,14,15";
- fi;
- if [ $CCMN == 16 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9,10,11,12,13,14,15,16";
- fi;
- if [ $CCMN == 17 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9,10,11,12,13,14,15,16,17";
- fi;
- if [ $CCMN == 18 ];
- then 
-  CCMNN1="-d 0,1,2,3,4,5,6,7,8";
-  CCMNN2="-d 9,10,11,12,13,14,15,16,17";
-  CCMNN3="-d 18";
- fi;
+ case $CCMN in
+    0) CCMNN1="-d 0";;
+    1) CCMNN1="-d 0,1";;
+    2) CCMNN1="-d 0,1,2";;
+    3) CCMNN1="-d 0,1,2,3";;
+    4) CCMNN1="-d 0,1,2,3,4";;
+    5) CCMNN1="-d 0,1,2,3,4,5";;
+    6) CCMNN1="-d 0,1,2,3,4,5,6";;
+    7) CCMNN1="-d 0,1,2,3,4,5,6,7";;
+    8) CCMNN1="-d 0,1,2,3,4,5,6,7,8";;
+    9) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+       CCMNN2="-d 9";;
+    10) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+        CCMNN2="-d 9,10";;
+    11) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+        CCMNN2="-d 9,10,11";;
+    12) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+        CCMNN2="-d 9,10,11,12";;
+    13) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+        CCMNN2="-d 9,10,11,12,13";;
+    14) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+        CCMNN2="-d 9,10,11,12,13,14";;
+    15) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+        CCMNN2="-d 9,10,11,12,13,14,15";;
+    16) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+        CCMNN2="-d 9,10,11,12,13,14,15,16";;
+    17) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+        CCMNN2="-d 9,10,11,12,13,14,15,16,17";;
+    18) CCMNN1="-d 0,1,2,3,4,5,6,7,8";
+        CCMNN2="-d 9,10,11,12,13,14,15,16,17";
+        CCMNN3="-d 18";;
+   esac
 };
-
-OCI[0]=0;OCI[1]=0;OCI[2]=0;OCI[3]=0;OCI[4]=0;
-OCI[5]=0;OCI[6]=0;OCI[7]=0;OCI[8]=0;OCI[9]=0;
-OCI[10]=0;OCI[11]=0;OCI[12]=0;OCI[13]=0;OCI[14]=0;
-OCI[15]=0;OCI[16]=0;OCI[17]=0;OCI[18]=0;OCI[19]=0;
 
 CHECK_I(){
  if [ $ALGO_I == "SAFE" ];
@@ -124,223 +64,6 @@ CHECK_I(){
   $OCIT1 / $GPUS" + $II|bc);
  fi;
 };
-
-OC[0]=1;OC[1]=1;OC[2]=1;OC[3]=1;OC[4]=1;
-OC[5]=1;OC[6]=1;OC[7]=1;OC[8]=1;OC[9]=1;
-OC[10]=1;OC[11]=1;OC[12]=1;OC[13]=1;OC[14]=1;
-OC[15]=1;OC[16]=1;OC[17]=1;OC[18]=1;OC[19]=0;
-
-RESET_OC(){
- OC[0]=1;OC[1]=1;OC[2]=1;OC[3]=1;OC[4]=1;
- OC[5]=1;OC[6]=1;OC[7]=1;OC[8]=1;OC[9]=1;
- OC[10]=1;OC[11]=1;OC[12]=1;OC[13]=1;OC[14]=1;
- OC[15]=1;OC[16]=1;OC[17]=1;OC[18]=1;OC[19]=0;
-};
-
-__CORE_OVERCLOCK[0]=$GPU0SCORE;
-MEMORY_OVERCLOCK[0]=$GPU0SMEM;
-OCC[0]=$GPU0SCORE;
-OCC[1]=$GPU1SCORE;
-OCC[2]=$GPU2SCORE;
-OCC[3]=$GPU3SCORE;
-OCC[4]=$GPU4SCORE;
-OCC[5]=$GPU5SCORE;
-OCC[6]=$GPU6SCORE;
-OCC[7]=$GPU7SCORE;
-OCC[8]=$GPU8SCORE;
-OCC[9]=$GPU9SCORE;
-OCC[10]=$GPU10SCORE;
-OCC[11]=$GPU11SCORE;
-OCC[12]=$GPU12SCORE;
-OCC[13]=$GPU13SCORE;
-OCC[14]=$GPU14SCORE;
-OCC[15]=$GPU15SCORE;
-OCC[16]=$GPU16SCORE;
-OCC[17]=$GPU17SCORE;
-OCC[18]=$GPU18SCORE;
-OCC[19]=0;
-OCM[0]=$GPU0SMEM;
-OCM[1]=$GPU1SMEM;
-OCM[2]=$GPU2SMEM;
-OCM[3]=$GPU3SMEM;
-OCM[4]=$GPU4SMEM;
-OCM[5]=$GPU5SMEM;
-OCM[6]=$GPU6SMEM;
-OCM[7]=$GPU7SMEM;
-OCM[8]=$GPU8SMEM;
-OCM[9]=$GPU9SMEM;
-OCM[10]=$GPU10SMEM;
-OCM[11]=$GPU11SMEM;
-OCM[12]=$GPU12SMEM;
-OCM[13]=$GPU13SMEM;
-OCM[14]=$GPU14SMEM;
-OCM[15]=$GPU15SMEM;
-OCM[16]=$GPU16SMEM;
-OCM[17]=$GPU17SMEM;
-OCM[18]=$GPU18SMEM;
-OCM[19]=0;
-GPUID[0]="0";
-GPUID[1]="0";
-GPUID[2]="0";
-GPUID[3]="0";
-GPUID[4]="0";
-GPUID[5]="0";
-GPUID[6]="0";
-GPUID[7]="0";
-GPUID[8]="0";
-GPUID[9]="0";
-GPUID[10]="0";
-GPUID[11]="0";
-GPUID[12]="0";
-GPUID[13]="0";
-GPUID[14]="0";
-GPUID[15]="0";
-GPUID[16]="0";
-GPUID[17]="0";
-GPUID[18]="0";
-GPUID[19]="0";
-GPUC[0]=0;
-GPUC[1]=0;
-GPUC[2]=0;
-GPUC[3]=0;
-GPUC[4]=0;
-GPUC[5]=0;
-GPUC[6]=0;
-GPUC[7]=0;
-GPUC[8]=0;
-GPUC[9]=0;
-GPUC[10]=0;
-GPUC[11]=0;
-GPUC[12]=0;
-GPUC[13]=0;
-GPUC[14]=0;
-GPUC[15]=0;
-GPUC[16]=0;
-GPUC[17]=0;
-GPUC[18]=0;
-GPUC[19]=0;
-GPUM[0]=0;
-GPUM[1]=0;
-GPUM[2]=0;
-GPUM[3]=0;
-GPUM[4]=0;
-GPUM[5]=0;
-GPUM[6]=0;
-GPUM[7]=0;
-GPUM[8]=0;
-GPUM[9]=0;
-GPUM[10]=0;
-GPUM[11]=0;
-GPUM[12]=0;
-GPUM[13]=0;
-GPUM[14]=0;
-GPUM[15]=0;
-GPUM[16]=0;
-GPUM[17]=0;
-GPUM[18]=0;
-GPUM[19]=0;
-GPUC1[0]=0;
-GPUC1[1]=0;
-GPUC1[2]=0;
-GPUC1[3]=0;
-GPUC1[4]=0;
-GPUC1[5]=0;
-GPUC1[6]=0;
-GPUC1[7]=0;
-GPUC1[8]=0;
-GPUC1[9]=0;
-GPUC1[10]=0;
-GPUC1[11]=0;
-GPUC1[12]=0;
-GPUC1[13]=0;
-GPUC1[14]=0;
-GPUC1[15]=0;
-GPUC1[16]=0;
-GPUC1[17]=0;
-GPUC1[18]=0;
-GPUC1[19]=0;
-GPUI[0]=0;
-GPUI[1]=0;
-GPUI[2]=0;
-GPUI[3]=0;
-GPUI[4]=0;
-GPUI[5]=0;
-GPUI[6]=0;
-GPUI[7]=0;
-GPUI[8]=0;
-GPUI[9]=0;
-GPUI[10]=0;
-GPUI[11]=0;
-GPUI[12]=0;
-GPUI[13]=0;
-GPUI[14]=0;
-GPUI[15]=0;
-GPUI[16]=0;
-GPUI[17]=0;
-GPUI[18]=0;
-GPUI[19]=0;
-GPUB[0]=0;
-GPUB[1]=0;
-GPUB[2]=0;
-GPUB[3]=0;
-GPUB[4]=0;
-GPUB[5]=0;
-GPUB[6]=0;
-GPUB[7]=0;
-GPUB[8]=0;
-GPUB[9]=0;
-GPUB[10]=0;
-GPUB[11]=0;
-GPUB[12]=0;
-GPUB[13]=0;
-GPUB[14]=0;
-GPUB[15]=0;
-GPUB[16]=0;
-GPUB[17]=0;
-GPUB[18]=0;
-GPUB[19]=0;
-GPUP[0]=0;
-GPUP[1]=0;
-GPUP[2]=0;
-GPUP[3]=0;
-GPUP[4]=0;
-GPUP[5]=0;
-GPUP[6]=0;
-GPUP[7]=0;
-GPUP[8]=0;
-GPUP[9]=0;
-GPUP[10]=0;
-GPUP[11]=0;
-GPUP[12]=0;
-GPUP[13]=0;
-GPUP[14]=0;
-GPUP[15]=0;
-GPUP[16]=0;
-GPUP[17]=0;
-GPUP[18]=0;
-GPUP[19]=0;
-GPUP1[0]=$GPU0AUTOCS;
-GPUP1[1]=$GPU1AUTOCS;
-GPUP1[2]=$GPU2AUTOCS;
-GPUP1[3]=$GPU3AUTOCS;
-GPUP1[4]=$GPU4AUTOCS;
-GPUP1[5]=$GPU5AUTOCS;
-GPUP1[6]=$GPU6AUTOCS;
-GPUP1[7]=$GPU7AUTOCS;
-GPUP1[8]=$GPU8AUTOCS;
-GPUP1[9]=$GPU9AUTOCS;
-GPUP1[10]=$GPU10AUTOCS;
-GPUP1[11]=$GPU11AUTOCS;
-GPUP1[12]=$GPU12AUTOCS;
-GPUP1[13]=$GPU13AUTOCS;
-GPUP1[14]=$GPU14AUTOCS;
-GPUP1[15]=$GPU15AUTOCS;
-GPUP1[16]=$GPU16AUTOCS;
-GPUP1[17]=$GPU17AUTOCS;
-GPUP1[18]=$GPU18AUTOCS;
-GPUP1[19]=$GPU19AUTOCS;
-UPURL="https://pxanetwork.com/checkup"
-
 
 OCDB(){
  source <(curl -s -S --insecure http://www.pxanetwork.com/pxa/OCDB);
@@ -398,20 +121,50 @@ Load_Sequence1(){
  fi;
 };
 
-auto_defaults(){
+auto_setDefaults(){
  OCIT=$MINER_INTENSITY;
  Loopback="Looper";
 
- MC[0]=0;MC[1]=0;MC[2]=0;MC[3]=0;MC[4]=0;MC[5]=0;MC[6]=0;MC[7]=0;MC[8]=0;MC[9]=0;
- MC[10]=0;MC[11]=0;MC[12]=0;MC[13]=0;MC[14]=0;MC[15]=0;MC[16]=0;MC[17]=0;MC[18]=0;
- MC1[0]=0;MC1[1]=0;MC1[2]=0;MC1[3]=0;MC1[4]=0;MC1[5]=0;MC1[6]=0;MC1[7]=0;MC1[8]=0;MC1[9]=0;
- MC1[10]=0;MC1[11]=0;MC1[12]=0;MC1[13]=0;MC1[14]=0;MC1[15]=0;MC1[16]=0;MC1[17]=0;MC1[18]=0;
- MM[0]=0;MM[1]=0;MM[2]=0;MM[3]=0;MM[4]=0;MM[5]=0;MM[6]=0;MM[7]=0;MM[8]=0;MM[9]=0;MM[10]=0;
- MM[11]=0;MM[12]=0;MM[13]=0;MM[14]=0;MM[15]=0;MM[16]=0;MM[17]=0;MM[18]=0;
- z1[0]=0;z1[1]=0;z1[2]=0;z1[3]=0;z1[4]=0;z1[5]=0;z1[6]=0;z1[7]=0;z1[8]=0;z1[9]=0;
- z1[10]=0;z1[11]=0;z1[12]=0;z1[13]=0;z1[14]=0;z1[15]=0;z1[16]=0;z1[17]=0;z1[18]=0;
- z2[0]=0;z2[1]=0;z2[2]=0;z2[3]=0;z2[4]=0;z2[5]=0;z2[6]=0;z2[7]=0;z2[8]=0;z2[9]=0;
- z2[10]=0;z2[11]=0;z2[12]=0;z2[13]=0;z2[14]=0;z2[15]=0;z2[16]=0;z2[17]=0;z2[18]=0;
+ __CORE_OVERCLOCK[0]=$GPU0SCORE;
+ MEMORY_OVERCLOCK[0]=$GPU0SMEM;
+
+ for i in {0..19}
+ do
+  if [ $i == "19" ]
+  then
+   OC[$i]=0;
+   OCC[$i]=0;
+   OCM[$i]=0;
+  else
+   MC[$i]=0;
+   MC1[$i]=0;
+   MM[$i]=0;
+   OC[$i]=1;
+   occVal="GPU${i}SCORE"
+   ocmVal="GPU${i}SMEM"
+   OCC[$i]=${!occVal};
+   OCM[$i]=${!ocmVal};
+   z1[$i]=0;
+   z2[$i]=0;
+  fi
+ done
+
+ for i in {0..19}
+ do
+  GPUB[$i]=0;
+  GPUC[$i]=0;
+  GPUC1[$i]=0;
+  GPUI[$i]=0;
+  GPUID[$i]="0";
+  GPUM[$i]=0;
+  GPUP[$i]=0;
+  gpup1Val="GPU${i}AUTOCS";
+  GPUP1[0]=${!gpup1Val};
+  OCI[$i]=0;
+ done
+
+ UPURL="https://pxanetwork.com/checkup"
+
  EWBF_VERSION="3_4";
  EWBF_PERCENT=0;
  CCMN=0;

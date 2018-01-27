@@ -93,6 +93,10 @@ gpu_setTemp(){
  fi;
 }
 
+OVERCLOCKCHECK(){ # backwards compatibility for tempcontrol program
+ gpu_setClock
+}
+
 gpu_setClock(){ # Used to be 3MAINOCC and OVERCLOCKCHECK
  if [[ $INDIVIDUAL_CLOCKS == "YES"&&$AUTOMATIC_OVERCLOCK == "NO" ]];
  then
@@ -259,6 +263,10 @@ gpu_setClock(){ # Used to be 3MAINOCC and OVERCLOCKCHECK
  fi;
 }
 
+CHECK_CARD(){
+ gpu_checkCard
+}
+
 gpu_checkCard() {
  DIDS=$(nvidia-smi --query-gpu=pci.sub_device_id --format=csv,noheader,nounits)
  i=0
@@ -285,7 +293,7 @@ gpu_checkCard() {
      GPUB[${i}]=$MODEL
      POWERMAX=${POWERMAX%.*}
      let GPUP[${i}]=$POWERMAX
-     OCDB
+     #OCDB # disabled call to OCDB for overclock setup
       i=$(($i + 1))
   done
 }

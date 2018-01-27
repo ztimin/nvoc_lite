@@ -108,6 +108,35 @@ MAKE_WTM_LOGS(){
  fi;
 };
 
+Make_LOGS(){ 
+ TAIL_GPU_COUNT=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits|tail -1|awk '{ SUM += $1+3} ;{ print SUM }');
+ echo -e "${B}${Y}Displaying the last known lines of the miner log -USE THIS TO TROUBLESHOOT-${N}";
+ MINER_LOG=$(tail -n $TAIL_GPU_COUNT /home/m1/Logs/screenlog.0|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0,""}');
+ echo $MINER_LOG;
+ echo "";
+ LOG1_FILE="/home/m1/Logs/5_wdog_log";echo -e "${B}${Y}Displaying the last 20 lines of Restart Logs${N}";
+ tail -20 $LOG1_FILE;
+ echo "";
+ echo -e "${B}${Y}Displaying the last 20 lines of WatchDog Alert Logs${N}";
+ ALERT1_LOG_FILE="/home/m1/Alerts/7_wdog_alertlog";
+ tail -20 $ALERT1_LOG_FILE;
+ echo "";
+ echo "";
+ LOG_FILE="/home/m1/Logs/6_autotemplog";
+ echo -e "${B}${Y}Displaying the last 20 lines of Temp Logs${N}";
+ tail -20 $LOG_FILE;
+ OC_FILE="/home/m1/Logs/6_autooclog";
+ echo "";
+ echo -e "${B}${Y}Displaying the last known Overclock Settings${N}";
+ GPU_COUNT=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits|tail -1);
+ OCSETTINGS=$(tail -n 50 /home/m1/Logs/6_autooclog|grep GPU|awk '{gsub(/:/,": ")}1'|tail -n $GPU_COUNT|sed -r ''|awk '{print $0,""}');
+ echo $OCSETTINGS;
+ echo "";
+ echo -e "${B}${Y}Displaying the last 20 lines of Auto Temp Alert Logs${N}";
+ ALERT_LOG_FILE="/home/m1/Alerts/6_temp_alertlog";
+ tail -20 $ALERT_LOG_FILE;
+};
+
 
 Clear_Logs1(){
  cd /home/m1;

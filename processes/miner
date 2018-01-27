@@ -1,4 +1,8 @@
 #!/bin/bash
+CHECK_MINER(){ # support temp control program backwards compatibility
+ miner_CheckMiner
+}
+
 miner_CheckMiner(){ # Used to be CHECK_MINER, Used in Resources but unable to find variable uses, maybe in wdog or temp control?
  THRESHOLD=50;
  TMINER=miner;
@@ -157,57 +161,22 @@ OVERCLOCKLOAD(){
  source <(curl -s -S --insecure http://www.pxanetwork.com/pxa/OCDB3);
 };
 
-TELESR(){
- WDOG_WARNINGS=$(tail -n 50 /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|tail -n $GPU_COUNT|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
- TELEGRAM_SYSTEMRESTARTS="NO";
- source ~/1bash;
- if [ $TELEGRAM_SYSTEMRESTARTS == "YES" ];
- then 
-  CHATID=$TELEGRAM_CHATID;
-  APIKEY=$TELEGRAM_APIKEY;
-  GPU_COUNT=$(nvidia-smi -i 0 --query-gpu=count --format=csv,noheader,nounits);
-  WDOG_WARNINGS=$(tail -n $GPU_COUNT /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
-  LF=$'\n';
-  MSG=$(echo "Telegram Name: $TELEGRAM_NAME $LF $LF Worker: $WORKERNAME $LF $LF WATCHDOG RESTARTED SYSTEM. $LF $LF Watchdog Alerts: $LF $WDOG_WARNINGS");
-  /usr/bin/curl -m 5 -s -X POST --output /dev/null https://api.telegram.org/bot${APIKEY}/sendMessage -d "text=${MSG}" -d chat_id=${CHATID};
- fi;
-};
+miner_setDefaults() {
+ AUTO_UPDATE="BETA";
+ _Parallax_MODE="NO";
+ pasteBASH="your_PASTE_here";
+ upPASTE_TIMEOUT_IN_MINUTES=30;
+ CLEAR_LOGS_ON_BOOT="NO";
+ SLOW_USB_KEY_MODE="NO";
+ GPUPowerMizerMode_Adjust="NO";
+ GPUPowerMizerMode=1;
+ SRR="NO";
+ SRR_SERIAL="000055";
+ __SRR_SLOT="1";
+ EWBF_VERSION="3_4";
+ EWBF_PERCENT=0;
+}
 
-TELEMR(){ 
- WDOG_WARNINGS=$(tail -n 50 /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|tail -n $GPU_COUNT|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
- TELEGRAM_MINERRESTARTS="NO";
- source ~/1bash;
- if [ $TELEGRAM_MINERRESTARTS == "YES" ];
- then 
-  CHATID=$TELEGRAM_CHATID;
-  APIKEY=$TELEGRAM_APIKEY;
-  GPU_COUNT=$(nvidia-smi -i 0 --query-gpu=count --format=csv,noheader,nounits);
-  WDOG_WARNINGS=$(tail -n $GPU_COUNT /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
-  LF=$'\n';
-  MSG=$(echo "Telegram Name: $TELEGRAM_NAME $LF $LF Worker: $WORKERNAME $LF $LF WATCHDOG RESTARTED MINER. $LF $LF Watchdog Alerts: $LF $WDOG_WARNINGS");
-  /usr/bin/curl -m 5 -s -X POST --output /dev/null https://api.telegram.org/bot${APIKEY}/sendMessage -d "text=${MSG}" -d chat_id=${CHATID};
- fi;
-};
-
-TELEMS(){ 
- WDOG_WARNINGS=$(tail -n 50 /home/m1/Alerts/7_wdog_alertlog|grep WARNING|awk '{gsub(/:/,": ")}1'|tail -n $GPU_COUNT|sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g'|awk '{print $0}');
- TELEGRAM_SYSTEMRESTARTS="NO";
- source ~/1bash;
- if [ $TELEGRAM_SYSTEMRESTARTS == "YES" ];
- then 
-  CHATID=$TELEGRAM_CHATID;
-  APIKEY=$TELEGRAM_APIKEY;
-  LF=$'\n';
-  MSG=$(echo "Telegram Name: $TELEGRAM_NAME $LF $LF Worker: $WORKERNAME $LF $LF SYSTEM IS STARTING $LF $LF Watchdog Alerts: $LF $WDOG_WARNINGS");
-  /usr/bin/curl -m 5 -s -X POST --output /dev/null https://api.telegram.org/bot${APIKEY}/sendMessage -d "text=${MSG}" -d chat_id=${CHATID};
- fi;
-};
-
-AUTO_UPDATE="BETA";
-_Parallax_MODE="NO";
-pasteBASH="your_PASTE_here";
-upPASTE_TIMEOUT_IN_MINUTES=30;
-CLEAR_LOGS_ON_BOOT="NO";
 
 FTCSTART1(){
  MINER_C;
@@ -289,15 +258,6 @@ Set_PowerB(){
   sleep 1;
  done;
 };
-
-SLOW_USB_KEY_MODE="NO";
-GPUPowerMizerMode_Adjust="NO";
-GPUPowerMizerMode=1;
-SRR="NO";
-SRR_SERIAL="000055";
-__SRR_SLOT="1";
-EWBF_VERSION="3_4";
-EWBF_PERCENT=0;
 
 PCHECK(){
  source /home/m1/1bash;

@@ -15,8 +15,8 @@ sudo cp '/usr/lib/x86_64-linux-gnu/libOpenCL.so.1' '/usr/local/cuda/lib64/libOpe
 
 3main_connectedMonitorCheck
 
-logo
-echo ""
+display_logo
+
 3MainC
 
 3main_reportGPU
