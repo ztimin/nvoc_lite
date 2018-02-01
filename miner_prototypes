@@ -62,6 +62,12 @@ then
  screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
 fi
 
+if [ "$MINER" == "TPccminer2" ]
+then
+ HCD='/home/m1/Miners/TPccminer2/ccminer'
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+fi
+
 if [ "$MINER" == "SGminer" ]
 then
  HCD='/home/m1/Miners/pasc/sgminer'

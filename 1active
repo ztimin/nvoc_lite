@@ -6,14 +6,18 @@
 ## Three mandatory settings: COIN, ALGO, POOL_CHOSEN ##
 #######################################################
 
-COIN="XVG"
+COIN="GRLC"
+#COIN="XVG"
 #COIN="ZEN"
 
 #ALGO="EQUIHASH"
-ALGO="X17"
+#ALGO="X17"
+ALGO="scrypt:10"
 
 #POOL_CHOSEN="MININGPOOLHUB"
-POOL_CHOSEN="SUPRNOVA"
+#POOL_CHOSEN="SUPRNOVA"
+#POOL_CHOSEN="GRLCBAKERY"
+POOL_CHOSEN="GARLICPOOL"
 
 #MINER_CHOSEN="alccminer" ## comment out to use default set in the overclock files, this overrides any overclock files setting
 

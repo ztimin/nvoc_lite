@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "in the equihash algo config"
+echo "using GRLC oc"
 
 ################################################
 ## Set (or don't) your custom card overclocks ##
@@ -13,14 +13,14 @@ echo "in the equihash algo config"
 # LITE is the default auto overclock settings for no crash performance.
 ################################################################################################
 
-MINER="ewbf_3_4"
-#MINER_INTENSITY="18"
+MINER="ccminer223"
+MINER_INTENSITY="20"
 
 ## Default for a 1070TI
 ## a good place for a GPU check per card
-CORE=200
-MEM=1050
-POW=165
+CORE=100
+MEM=1000
+POW=161
 MAXTEMP=75
 
 ## GPU0

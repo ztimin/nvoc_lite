@@ -1,0 +1,9 @@
+#!/bin/bash
+## Set your defaults ##################
+
+USERNAME="GPknPp1A1cybFSQzHWW1zHXiR481hddvaK"
+#WORKERNAME="86753099"
+MINER_ADDRESS="$USERNAME"
+MINER_ALGO="$ALGO"
+MINER_PWD="password"
+

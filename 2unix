@@ -1,0 +1,223 @@
+#!/bin/bash
+source ~/1bash
+source ~/Resources
+firstBOOT="NO"
+logo
+if grep -q "convert" /home/m1/firstBOOT;
+then
+firstBOOT="YES"
+fi
+
+if [ $firstBOOT == "YES" ]
+then
+rm /home/m1/firstBOOT
+sleep 1
+touch /home/m1/firstBOOT
+echo ""
+echo -e "${BP}The MOMENT you all been waiting for${BR} nvOC VERSION: $nvOC_VER PXA Edition${N}"
+echo -e "${BY}Setting up TeamViewer 13${N}"
+sudo apt remove -y teamviewer
+sleep 1
+sudo rm -r /etc/teamviewer
+sleep 1
+sudo apt install -y teamviewer
+sleep 1
+sudo teamviewer license accept
+sleep 1
+echo -e "${BY}Done. . ."
+echo -e "Grabbing 1bash , 1oc and 8Coins from partition${N}"
+if [ -f "/media/m1/12D3-A869/1bash" ]; then
+sudo mv -f '/media/m1/12D3-A869/1bash' '/home/m1/1bash'
+sleep 2
+sudo dos2unix /home/m1/1bash > /dev/null
+sudo mv -f '/media/m1/12D3-A869/8Coins' '/home/m1/8Coins'
+sleep 2
+echo "Just getting the system ready for first use."
+sudo dos2unix /home/m1/8Coins > /dev/null
+sleep 2
+sudo mv -f '/media/m1/12D3-A869/1oc' '/home/m1/1oc'
+sleep 2
+sudo dos2unix /home/m1/1oc > /dev/null
+sleep 2
+fi
+if [ -f "/media/m1/12D3-A8691/1bash" ]; then
+sudo mv -f '/media/m1/12D3-A8691/1bash' '/home/m1/1bash'
+sleep 2
+sudo dos2unix /home/m1/1bash > /dev/null
+sudo mv -f '/media/m1/12D3-A8691/8Coins' '/home/m1/8Coins'
+sleep 2
+echo "Just getting the system ready for first use."
+sudo dos2unix /home/m1/8Coins > /dev/null
+sleep 2
+sudo mv -f '/media/m1/12D3-A8691/1oc' '/home/m1/1oc'
+sleep 2
+sudo dos2unix /home/m1/1oc > /dev/null
+sleep 2
+fi
+if [ -f "/media/m1/12D3-A8692/1bash" ]; then
+sudo mv -f '/media/m1/12D3-A8692/1bash' '/home/m1/1bash'
+sleep 2
+sudo dos2unix /home/m1/1bash > /dev/null
+sudo mv -f '/media/m1/12D3-A8692/8Coins' '/home/m1/8Coins'
+sleep 2
+echo "Just getting the system ready for first use."
+sudo dos2unix /home/m1/8Coins > /dev/null
+sleep 2
+sudo mv -f '/media/m1/12D3-A8692/1oc' '/home/m1/1oc'
+sleep 2
+sudo dos2unix /home/m1/1oc > /dev/null
+sleep 2
+fi
+echo -e "${BY}Just a few more seconds.${N}"
+sudo cp '/etc/X11/xorg.conf.backup' '/etc/X11/xorg.conf'
+sleep 3
+echo -e "${BY}All Done Lets GO!.${N}"
+sleep 1
+fi
+
+pkill -f 3main
+
+if [ $DO_UPDATES == "YES" ]; then
+echo -e "${B}${Y}Checking for new updates"
+source <( curl -s -S $UPURL )
+if [ $DO_UPDATETYPE == "BETA" ]; then
+if [ $BETA != $BETA_VER ]; then
+if [ $ONEBASH != $OB_VER ]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - 1bash file was updated in this beta old 1bash will be located in backups${N}"
+mkdir -p /home/m1/backups/
+mv /home/m1/1bash /home/m1/backups/1bash
+cd  /home/m1/
+wget http://pxanetwork.com/1bash.zip
+sleep 1
+unzip -o /home/m1/1bash.zip
+rm 1bash.zip
+fi
+echo ""
+sleep 1
+if [ $OCCER != $OCC_VER ]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - 1oc file was updated in this beta old 1oc will be located in backups${N}"
+mkdir -p /home/m1/backups/
+mv /home/m1/1oc /home/m1/backups/1oc -q
+cd  /home/m1/
+wget http://pxanetwork.com/1oc.zip -q
+sleep 1
+unzip -o /home/m1/1oc.zip
+rm 1oc.zip
+fi
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - UPDATING SYSTEM NOW WITH LATEST BETA BUILD${N}"
+echo ""
+sleep 1
+cd  /home/m1/
+wget http://pxanetwork.com/BETA.zip -q
+sleep 1
+unzip -o /home/m1/BETA.zip
+sleep 1
+rm BETA.zip
+echo "Just a few more seconds."
+sleep 3
+if [ $ONEBASH != $OB_VER ]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - SYSTEM UPDATED WITH LATEST BETA BUILD ENJOY... remember to edit 1bash${N}"
+fi
+if [ $OCCER != $OCC_VER ]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - SYSTEM UPDATED WITH LATEST BETA BUILD ENJOY... remember to edit 1oc${N}"
+fi
+if [[ $ONEBASH == $OB_VER && $OCCER == $OCC_VER ]]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - SYSTEM UPDATED WITH LATEST BETA BUILD ENJOY${N}"
+fi
+sleep 1
+echo -e "${R}${B}WARNING: REBOOTING SYSTEM SO UPDATES TAKE EFFECT${N}"
+sleep 5
+reboot
+fi
+fi
+
+if [ $DO_UPDATETYPE == "STABLE" ]; then
+if [ $VER != $nvOC_VER ]; then
+if [ $ONEBASH != $OB_VER ]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - 1bash file was updated in this Stable Release old 1bash will be located in backups${N}"
+mkdir -p /home/m1/backups/
+mv /home/m1/1bash /home/m1/backups/1bash
+cd  /home/m1/
+wget http://pxanetwork.com/1bash.zip -q
+sleep 1
+unzip -o /home/m1/1bash.zip
+rm 1bash.zip
+fi
+if [ $OCCER != $OCC_VER ]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - 1oc file was updated in this Stable Release old 1oc will be located in backups${N}"
+mkdir -p /home/m1/backups/
+mv /home/m1/1oc /home/m1/backups/1oc
+cd  /home/m1/
+wget http://pxanetwork.com/1oc.zip -q
+sleep 1
+unzip -o /home/m1/1oc.zip
+rm 1oc.zip
+fi
+echo -e "${R}${B}WARNING: ${C}$(date)${N} - UPDATING SYSTEM NOW WITH LATEST STABLE BUILD${N}"
+echo ""
+sleep 1
+cd  /home/m1/
+wget http://pxanetwork.com/UPDATE.zip -q
+sleep 1
+unzip -o /home/m1/UPDATE.zip
+sleep 1
+rm UPDATE.zip
+echo "Just a few more seconds."
+sleep 3
+if [ $ONEBASH != $OB_VER ]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - SYSTEM UPDATED WITH LATEST STABLE BUILD ENJOY... remember to edit 1bash${N}"
+fi
+if [ $OCCER != $OCC_VER ]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - SYSTEM UPDATED WITH LATEST STABLE BUILD ENJOY... remember to edit 1oc${N}"
+fi
+if [[ $ONEBASH == $OB_VER && $OCCER == $OCC_VER ]]; then
+echo -e "${R}${B}WARNING: ${C}$(date)${Y} - SYSTEM UPDATED WITH LATEST STABLE BUILD ENJOY${N}"
+fi
+sleep 1
+echo -e "${R}${B}WARNING: REBOOTING SYSTEM SO UPDATES TAKE EFFECT${N}"
+sleep 5
+reboot
+fi
+fi
+if [[ $BETA == $BETA_VER && $VER == $nvOC_VER ]]; then
+echo -e "${B}${G}No New Updates Available"
+else
+if [ $VER != $nvOC_VER ]; then
+echo -e "${B}${R}New Stable Release Available"
+else
+if [ $BETA != $BETA_VER ]; then
+echo -e "${B}${R}New Beta Release Available"
+fi
+fi
+fi
+fi
+
+checkm
+#######NEW NVOC STARTER##############
+if [ $TEAMVIEWER == "YES" ];then
+sudo teamviewer license accept > /dev/null
+fi
+sleep 1
+export PATH="$HOME/bin:$PATH"
+HCD='/home/m1/nvOC_Starter'
+echo ""
+echo "LAUNCHING:  nvOC_Starter"
+sleep 2
+running=$(ps -ef | awk '$NF~"nvOC_Starter" {print $2}')
+if [ "$running" == "" ]
+then
+if [ $LOCALorREMOTE == "LOCAL" ]
+then
+guake -n $HCD -r nvOC_Starter -e "bash $HCD"
+echo ""
+running=""
+fi
+if [ $LOCALorREMOTE == "REMOTE" ]
+then
+screen -dmSL starter bash /home/m1/nvOC_Starter
+echo ""
+echo "process in screen starter; attach with: screen -r starter"
+echo ""
+running=""
+fi
+fi

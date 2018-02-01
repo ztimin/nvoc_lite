@@ -1,0 +1,11 @@
+#!/bin/bash
+source ~/pools/GARLICPOOL.defaults
+
+## Pool ports #########################
+
+case $COIN in
+ "GRLC") 
+     MINER_POOL="stratum+tcp://eu.stratum.garlicpool.org"
+     MINER_PORT="3333";;
+esac
+
