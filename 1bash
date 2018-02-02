@@ -22,7 +22,7 @@ if [ $remotebash == "NO" -o $remotebash == "no" ]; then   #
 TEMPERATURE_CONTROL="NO" ###### THIS IS TEMPERATURE CONTROL WILL SET FANS AND POWER TO
 #KEEP DESIRED TEMPERATURE
 
-WATCHDOG="YES" ##### WATCHDOG IS MEANT TO KEEP THE SYSTEM RUNNING
+WATCHDOG="NO" ##### WATCHDOG IS MEANT TO KEEP THE SYSTEM RUNNING
 
 #######################################################################################
 #			REMOTE - LOCAL SETTINGS

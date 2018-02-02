@@ -14,12 +14,13 @@ echo "using GRLC oc"
 ################################################################################################
 
 MINER="ccminer223"
-MINER_INTENSITY="20"
+MINER_INTENSITY="15"
+MINER_ADDITIONAL_ARGS="--lookup-gap=2"
 
 ## Default for a 1070TI
 ## a good place for a GPU check per card
-CORE=100
-MEM=1000
+CORE=150
+MEM=1100
 POW=161
 MAXTEMP=75
 

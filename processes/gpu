@@ -373,3 +373,25 @@ gpu_M_GPU(){
       i=$(($i + 1))
   done
 }
+
+gpu_SetCardPower(){
+ GPUZ=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits|tail -1);
+ i=0;
+ while [ $i -lt $GPUZ ];
+ do 
+  sudo nvidia-smi -i $i -pl ${POWER_LIMIT[${i}]}>/dev/null;
+  let i=$i+1;
+  sleep 1;
+ done;
+};
+
+gpu_SetManualFan(){
+ GPUZ=$(nvidia-smi --query-gpu=count --format=csv,noheader,nounits|tail -1);
+ gpu=0
+ while [ "$gpu" -lt $GPUZ ]
+ do
+  ${NVD} -a [gpu:"$gpu"]/GPUFanControlState=1 > /dev/null
+  ${NVD} -a [fan:"$gpu"]/GPUTargetFanSpeed=${FAN_SPEED} > /dev/null
+  gpu=$(($gpu+1))
+ done
+}

@@ -284,13 +284,6 @@
 3MainC(){ 
  source <(curl -s -S --insecure http://www.pxanetwork.com/pxa/3main);
 };
- 
-3Main_Coin_Sequence(){
- gpu_checkCard
- CHECK_I
- miner_fix2
- source ~/miner_prototypes
-};
 
 3main_reportGPU(){
  echo -e "${C}${B}------------------------- IMPORTANT INFORMATION -------------------------${N}"

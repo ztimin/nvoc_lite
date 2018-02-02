@@ -17,7 +17,7 @@ sudo cp '/usr/lib/x86_64-linux-gnu/libOpenCL.so.1' '/usr/local/cuda/lib64/libOpe
 
 display_logo
 
-3MainC
+#3MainC ## calls pxa
 
 3main_reportGPU
 
@@ -30,12 +30,24 @@ NVD=nvidia-settings # subsequent methods depend on this
 
 3main_slowUSBKeyModeCheck
 
-gpu_setClock
-
 3main_defaultOverclockAndFanChecks_nonP106
 
 3Main_Sequence_3
-3Main_Coin_Sequence
+
+gpu_checkCard ## sets let GPUP[${i}]=$POWERMAX (180) among other things
+
+##### 
+
+gpu_SetManualFan
+gpu_setTemp ## populates TARGET_TEMP[]
+gpu_setClock ## populates MEMORY_OVERCLOCK[] and __CORE_OVERCLOCK[]
+gpu_setPower ## populates POWER_LIMIT[]
+gpu_SetCardPower ## sets the card power rates from POWER_LIMIT[]
+3MAIN_CHECKOC ## actually set the mem and core offsets via smi
+miner_fix2
+source ~/miner_prototypes
+
+####
 
 if [ "$LOCALorREMOTE" == "LOCAL" ]
 then

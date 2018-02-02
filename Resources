@@ -25,30 +25,30 @@ TEMP_VER="1.9.8"
 WDOG_VER="1.9.8"
 sudo chown -R m1 /tmp/;sudo chown -R m1 /tmp;
 
-gpu_setClock
-gpu_setPower
-gpu_setTemp
+#gpu_setClock
+#gpu_setPower
+#gpu_setTemp
 miner_CheckMiner
 
 CURRENT_COIN=$COIN;
 
 gpu_isNormalOr1050
 
-gpu_setClock
-gpu_setPower
-gpu_setTemp
+#gpu_setClock
+#gpu_setPower
+#gpu_setTemp
 
 display_loadFormatting
 
 display_checkMonitor
 
-auto_setDefaults
+#auto_setDefaults
 
 gpu_checkCard
 
 TELEGRAM_TYPE="papampi";
 
-gpu_M_GPU
+#gpu_M_GPU
 
 miner_setDefaults
 

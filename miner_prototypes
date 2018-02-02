@@ -1,77 +1,82 @@
 #!/bin/bash
 
 ## checking for a password override from 1active ########
-if [ -n $PASSWORD_OVERRIDE ]
+if [ -n "$PASSWORD_OVERRIDE" ]
 then
- MINER_PWD=$PASSWORD_OVERRIDE
+ MINER_PWD="$PASSWORD_OVERRIDE"
+fi
+
+if [ -n "$MINER_INTENSITY" ]
+then
+ MINER_INTENSITY="-i $MINER_INTENSITY"
 fi
 
 if [ "$MINER" == "alccminer" ]
 then
  miner_start1
  HCD='/home/m1/Miners/alccminer/ccminer'
- screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "ccminer223" ]
 then
  miner_start1
  HCD='/home/m1/Miners/ccminer223/ccminer'
- screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "ccminer" ]
 then
  HCD='/home/m1/Miners/ccminer/ccminer'
- screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "ccminer-xevan" ]
 then
  miner_start1
- screen -dmSL miner "$HCD" -a "$MINER_ALGO" --cpu-priority 0 -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" --cpu-priority 0 -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "vertminer" ]
 then
  HCD='/home/m1/Miners/vertminer/ccminer'
- screen -dmSL miner "$HCD" -a "$MINER_ALGO" --cpu-priority 0 -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" --cpu-priority 0 -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "KTccminer-cryptonight" ]
 then
  HCD='/home/m1/Miners/KTccminer-cryptonight/ccminer'
- screen -dmSL miner "$HCD" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "KXccminer-skunk" ]
 then
  HCD='/home/m1/Miners/KXccminer-skunk/ccminer'
- screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "SPccminer" ]
 then
  HCD='/home/m1/Miners/SPccminer/ccminer'
- screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "TPccminer" ]
 then
  HCD='/home/m1/Miners/TPccminer/ccminer'
- screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "TPccminer2" ]
 then
  HCD='/home/m1/Miners/TPccminer2/ccminer'
- screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -i "$MINER_INTENSITY"
+ screen -dmSL miner "$HCD" -a "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "SGminer" ]
 then
  HCD='/home/m1/Miners/pasc/sgminer'
- screen -dmSL miner "$HCD" -k "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" -I "$MINER_INTENSITY" -w 64 -g2
+ screen -dmSL miner "$HCD" -k "$MINER_ALGO" -o "$MINER_POOL":"$MINER_PORT" -u "$MINER_ADDRESS" -p "$MINER_PWD" "$MINER_INTENSITY" -w 64 -g2 "$MINER_ADDITIONAL_ARGS"
 fi
 
 if [ "$MINER" == "zm" ]

@@ -1,0 +1,237 @@
+#!/bin/bash
+export DISPLAY=:0
+
+sleep 1
+
+source ~/1bash
+source ~/Resources
+source ~/3main  
+Make_Logs_WDOG
+OLDCOIN=$COIN
+TMINER=miner
+RESTART=0
+GPU_COUNT=$(nvidia-smi -i 0 --query-gpu=count --format=csv,noheader,nounits)
+SLEEP_TIME=$((($GPU_COUNT * 10 ) + 10 ))
+MINER_TIME=$((($GPU_COUNT * 3 ) + 10 ))
+if [ $GPU_COUNT -gt 7 ]; 
+then
+ WATCH_TIME=$((($GPU_COUNT / 2 ) + 10 ))
+else
+ WATCH_TIME=$((($GPU_COUNT * 2 ) + 10 ))
+fi
+if  [[ -z  $(ps ax | grep -i screen | grep miner) ]]
+then
+ echo -e "${R}${B}WARNING: ${C}$(date)${N} - miner not running, waiting $MINER_TIME seconds" | tee -a $LOG1_FILE
+ sleep $MINER_TIME
+fi
+
+if  [[ -z  $(ps ax | grep -i screen | grep miner) ]]
+then
+ echo -e "${R}${B}WARNING: ${C}$(date)${N} - miner still not running, restarting nvOC" | tee -a $LOG1_FILE $ALERT1_LOG_FILE
+else
+ echo -e "${B}${C}$(date)${N} - : miner is running, waiting ${B}${R}$SLEEP_TIME${N} seconds before ${B}${R}Scanning${N}"  | tee -a $LOG1_FILE
+ sleep $SLEEP_TIME
+fi
+
+ALGOC1=3
+source ~/Resources
+CHECK_MINER
+if [ $TMINER == ccminer ]; 
+then
+ ALGOC1=$GPU_COUNT
+fi
+ COUNT1=$(($GPU_COUNT + $ALGOC1))
+ COUNT2=$(($GPU_COUNT + $WATCH_TIME))
+
+if [[  $WTM_AUTO_SWITCH  ==  "NO"  ]]
+then
+ TELEMS
+fi
+while true
+do
+ sleep $COUNT2
+ GPULT=0
+ if [ $TEAMVIEWER == "YES" ]; 
+ then
+  if ! pgrep -x "TeamViewer*" > /dev/null
+  then
+   sudo teamviewer license accept
+   guake -n teamviewer -r TeamViewer -e "teamviewer"
+   running=""
+  fi
+ fi
+ #If WTM_AUTO_SWITCH python script running time is more than 30 Sec kill it
+ if [[  $WTM_AUTO_SWITCH  ==  "YES"  ]] || [[ $WTM_PROFIT_CHECK == "YES" ]]
+ then
+  WTM_S_PID=`ps -ef | grep WTM_SWITCHER | grep -v grep |awk '{print $2}'`
+  if  [[ -n $WTM_A_S_PID ]]
+  then
+   WTM_S_PID_TIME=`ps -eo pid,etimes | grep $WTM_S_PID | awk  '$2> 30 { print $1}'`
+   echo "WTM Switcher Syncing"
+   if  [[ -n "$WTM_S_PID_TIME" ]]
+   then
+    echo "WARNING: $(date) - WTM switcher can't sync, restarting it" | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+    ps -eo pid,etimes | grep `pgrep -f WTM_SWITCHER` | awk  '$2> 30 { print $1}'  | xargs kill -9
+   fi
+  fi
+ fi
+ GPU=0
+ GPUT=0
+ REBOOTRESET=$(($REBOOTRESET + 1))
+ echo -e "${N}"
+ echo -e "${N}"
+ echo -e "${C}      GPU COUNT:${N} " $GPU_COUNT | tee -a ${LOG1_FILE}
+ 
+ UTILIZATIONS=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)
+ echo ""
+ echo -e "${C}      GPU UTILIZATION:${N} " $UTILIZATIONS | tee -a ${LOG1_FILE}
+ echo -e "${N}"
+
+ POWER=$(nvidia-smi --query-gpu=power.draw --format=csv,noheader,nounits)
+ echo -e "${C}      DRAW POWER:${N}${R} " $POWER ${N} | tee -a ${LOG1_FILE}
+ echo -e "${N}"
+ pwr='^[0-9.]+$'
+ gpup=0
+ for PWR in $POWER
+ do
+  if ! [[ $PWR =~ $pwr ]]
+  then
+   echo -e "${R}${B}WARNING: ${C}$(date)${N} - GPU Disconnected so restarting. Failed GPU num: $(gpup)" | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+   echo ""
+   nvidia-smi --query-gpu=gpu_bus_id --format=csv | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+   echo -e "${R}${B}WARNING: ${C}$(date)${N} - reboot in 10 seconds"  | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+   echo ""
+   TELESR
+   sleep 10
+   reboot
+  fi
+  gpup=$(($gpup + 1))
+ done
+
+ numtest='^[0-9]+$'
+  
+ for UTIL in $UTILIZATIONS
+ do
+  if ! [[ $UTIL =~ $numtest ]]
+  then
+   echo -e "${R}${B}WARNING: ${C}$(date)${N} - Lost GPU so restarting system. List Of GPUS:${R}" | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+   echo -e "" #| tee -a ${LOG1_FILE}
+   nvidia-smi --query-gpu=gpu_bus_id --format=csv | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+   echo -e "${N}"
+   echo -e "${R}${B}WARNING: ${C}$(date)${N} - reboot in 10 seconds"  | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+   echo -e "${N}"
+   TELESR
+   sleep 10
+   sudo reboot
+  fi
+  if [ $UTIL -lt $THRESHOLD ]
+  then
+   echo -e "${R}${B}WARNING: ${C}$(date)${N}- GPU under threshold found - GPU UTILIZATION: ${R}" $UTILIZATIONS  | tee -a ${LOG1_FILE}
+   echo -e "${N}"
+   GPULT=$(($GPULT + 1))
+  fi
+  GPU=$(($GPU + 1))
+ done
+ 
+ GPUPS=$((100 * GPULT / GPU_COUNT ))
+ if [ $GPUPS -gt 0 ]; then
+  COUNT1=$(($COUNT1 - 1))
+ fi
+ if [ $GPUPS -ge 100 ]; then
+  COUNT1=$(($COUNT1 - $COUNT1))
+ fi
+ if [ $GPUPS -gt 0 ]
+ then
+  if [ $COUNT1 -le 0 ]
+  then
+   INTERNET_IS_GO=0
+   if nc -vzw1 google.com 443;
+   then
+    INTERNET_IS_GO=1
+   fi
+   echo ""
+   if [[ $RESTART -ge 3 && $INTERNET_IS_GO == 1 && $RESTART -lt 4 ]]
+   then
+    echo -e "${R}${B}WARNING: ${C}$(date)${N} - Utilization is too low: trying to fix errors" | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+    miner_fix2
+   fi
+   if [[ $RESTART -gt 4 && $INTERNET_IS_GO == 1 ]]
+   then
+    echo -e "${R}${B}WARNING: ${C}$(date)${N} - Utilization is too low: reviving did not work so restarting system in 10 seconds" | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+    echo "" #| tee -a ${LOG1_FILE}
+    TELESR
+    m_fix
+   fi
+   if [ $OLDCOIN != $COIN ]; 
+   then
+    ALGOC1=3
+    source ~/1bash
+    source ~/Resources
+    echo -e "${B}${C}$(date)${N} - : Coin Change Detected Waiting For Miner To Connect"
+    CHECK_MINER
+    if [ $TMINER == ccminer ]; 
+    then
+     sleep 60
+     OLDCOIN=$COIN
+     ALGOC1=$GPU_COUNT
+     COUNT1=$(($GPU_COUNT + $ALGOC1))
+    else
+     sleep 30
+     OLDCOIN=$COIN
+     COUNT1=$(($GPU_COUNT + $ALGOC1))
+     echo -e "${N}"
+    fi
+   fi
+
+   if [ $OLDCOIN == $COIN ]; 
+   then
+    ALGOC1=3
+    source ~/1bash
+    source ~/Resources
+    CHECK_MINER
+    echo -e "${R}${B}WARNING: ${C}$(date)${N} - Utilization is too low: restarting nvOC" | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+    if [ $TMINER == ccminer ]; 
+    then
+     ALGOC1=$GPU_COUNT
+     COUNT1=$(($GPU_COUNT + $ALGOC1))
+     pkill -e $TMINER
+     pkill -f $TMINER
+     TELEMR
+     source ~/1bash
+     3Main_Coin_Sequence
+     echo "" | tee -a ${LOG1_FILE}
+     RESTART=$(($RESTART + 1))
+     REBOOTRESET=0
+     echo "Waiting on ccminer to connect"
+     sleep 60
+    else
+     COUNT1=$(($GPU_COUNT + $ALGOC1))
+     pkill -e $TMINER
+     pkill -f $TMINER
+     TELEMR
+     source ~/1bash
+     3Main_Coin_Sequence
+     echo "" | tee -a ${LOG1_FILE}
+     RESTART=$(($RESTART + 1))
+     REBOOTRESET=0
+    fi
+   fi
+   sleep 60
+  else
+   echo -e "${R}${B}WARNING: ${C}$(date)${N} - Low Utilization Detected: nvOC will reinit if there are $COUNT1 consecutive failures" | tee -a ${LOG1_FILE} ${ALERT1_LOG_FILE}
+   echo ""
+  fi
+ else
+  echo -e "${N}"
+  echo -e "${B}${C}$(date)${N} - : Everything is stable Checking again in ${BG}$COUNT2 ${N}Seconds" | tee -a ${LOG1_FILE}
+  echo -e "${N}--------------------------------------------------------------------------------------"
+ fi
+ # No need for a reboot after a while
+ if [ $REBOOTRESET -gt 5 ]
+ then
+  RESTART=0
+  REBOOTRESET=0
+ fi
+done
+
+
