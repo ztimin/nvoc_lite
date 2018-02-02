@@ -1,0 +1,13 @@
+#!/bin/bash
+export DISPLAY=:0
+source ~/1bash
+source ~/Resources
+#########################################################################
+sudo pkill -f terminal > /dev/null
+sudo pkill -f miner > /dev/null
+sudo pkill -e miner > /dev/null
+sudo pkill -f screen > /dev/null
+gnome-terminal -e "bash '/home/m1/3main'"
+exit
+
+#################### DONE LOADING nvOC Continue #########################

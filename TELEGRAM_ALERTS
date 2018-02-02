@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source ~/1bash
+source ~/Resources
+
+while [ $Loopback == "Looper" ]
+do
+TIMEIN=$TELEGRAM_TIMEOUT_IN_MINUTES
+TIMEOUT=$(($TIMEIN * 60))
+TELEGRAM
+sleep 2
+echo ""
+echo "New Telegram in $TIMEOUT seconds"
+sleep $TIMEOUT
+echo ""
+done
+
+

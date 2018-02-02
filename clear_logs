@@ -1,0 +1,29 @@
+#!/bin/bash
+
+cd /home/m1
+
+ > /home/m1/Logs/5_wdog_log
+
+ > /home/m1/Logs/6_autotemplog
+
+ > /home/m1/Logs/6_autooclog
+
+ > /home/m1/Logs/current-profit
+
+ > /home/m1/Logs/algo-log
+
+ > /home/m1/Alerts/7_wdog_alertlog
+
+ > /home/m1/Alerts/6_temp_alertlog
+
+ > /home/m1/Logs/8_wtmautoswitchlog
+
+ > /home/m1/Logs/top_coin
+
+ > /home/m1/Logs/WTM_switch_history
+
+ > /home/m1/Logs/WTM_current_profit
+
+ > /home/m1/Logs/WTM_current_revenue
+
+ > /home/m1/Logs/screenlog.0
